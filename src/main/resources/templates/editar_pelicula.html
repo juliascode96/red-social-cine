@@ -7,8 +7,7 @@
 <body>
 <div>
     <h2>New book</h2>
-    <form th:action="@{/pelicula/creada}" th:object="${pelicula}" method="post">
-        <input hidden th:field="*{id}">
+    <form th:action="@{/editar}" th:object="${pelicula}" method="post">
         <div class="user-box">
             <input type="text" name = "titulo" th:field = "*{titulo}">
             <label>Titulo</label>
