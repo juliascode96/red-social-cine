@@ -105,7 +105,7 @@ public class PeliculaServicio {
         Optional<Pelicula> respuesta = repopeli.findById(id);
         if (respuesta.isPresent()) {
             Pelicula pelicula = respuesta.get();
-            repopeli.deleteById(id);
+            repopeli.deleteById(pelicula.getId());
         } else {
         }
         throw new ErrorServicio("No se pudo encontrar una pelicula con ese id");

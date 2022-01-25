@@ -1,7 +1,9 @@
 package com.egg.cinefilos.controladores;
 
+import com.egg.cinefilos.entidades.Comentario;
 import com.egg.cinefilos.entidades.Pelicula;
 import com.egg.cinefilos.excepciones.ErrorServicio;
+import com.egg.cinefilos.servicios.ComentarioServicio;
 import com.egg.cinefilos.servicios.PeliculaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,9 @@ public class PeliculaControl {
 
     @Autowired
     PeliculaServicio peliculaServicio;
+
+    @Autowired
+    ComentarioServicio comenSV;
 
     @GetMapping("/nueva")
     public String nuevaPeliculaForm(Model model) {
@@ -48,21 +53,37 @@ public class PeliculaControl {
         return "editar_pelicula";
     }
 
-    @PostMapping("/editar")
-    public String editarPelicula(@PathVariable Long id, Model model, @ModelAttribute("pelicula") Pelicula pelicula) {
-        Optional<Pelicula> respuesta = peliculaServicio.buscarPorId(id);
-
-        if(respuesta.isPresent()) {
-            Pelicula p1 = respuesta.get();
+    @PostMapping("/{id}")
+    public String editarPelicula(@PathVariable Long id, Model model, @ModelAttribute("pelicula") Pelicula p1) {
             try {
                 peliculaServicio.modificarPelicula(p1.getId(), p1.getTitulo(), p1.getDirector(), p1.getActores(), p1.getDuracion(), p1.getGenero(), p1.getAnio(), p1.getValoracion(), p1.getCantValoracion());
                 return "redirect:/pelicula/todas";
             } catch (ErrorServicio e) {
                 return "error";
             }
+    }
 
+    @GetMapping("/borrar/{id}")
+    public String borrarPelicula(@PathVariable Long id) {
+        try {
+            peliculaServicio.eliminarPelicula(id);
+            return "redirect:/pelicula/todas";
+        } catch (ErrorServicio e) {
+            return "error.html";
+        } finally {
+            return "redirect:/pelicula/todas";
         }
-        return "redirect:/pelicula/todas";
+    }
+
+    @GetMapping("/detalles/{id}")
+    public String detallesPelicula(@PathVariable Long id, Model model) {
+        Pelicula p = peliculaServicio.buscarPorId(id).get();
+        model.addAttribute("pelicula", p);
+        ArrayList<Comentario> comentarios = (ArrayList<Comentario>) comenSV.buscarPorPelicula(id);
+        model.addAttribute("comentarios", comentarios);
+        Comentario c = new Comentario();
+        model.addAttribute("comentario", c);
+        return "pelicula";
     }
 
 

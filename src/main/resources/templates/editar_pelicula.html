@@ -6,8 +6,8 @@
 </head>
 <body>
 <div>
-    <h2>New book</h2>
-    <form th:action="@{/editar}" th:object="${pelicula}" method="post">
+    <h2>Editar pelicula</h2>
+    <form th:action="@{/pelicula/{id} (id = ${pelicula.id})}" th:object="${pelicula}" method="post">
         <div class="user-box">
             <input type="text" name = "titulo" th:field = "*{titulo}">
             <label>Titulo</label>
@@ -15,6 +15,10 @@
         <div class="user-box">
             <input type="text" name = "director" th:field = "*{director}">
             <label>Director</label>
+        </div>
+        <div class="user-box">
+            <input type="text" name = "sinopsis" th:field = "*{sinopsis}">
+            <label>Sinopsis</label>
         </div>
         <div class="user-box">
             <input type="number" name = "duracion" th:field = "*{duracion}">

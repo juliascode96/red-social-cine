@@ -6,7 +6,7 @@
 </head>
 <body>
 <div>
-    <h2>New book</h2>
+    <h2>Nueva pelicula</h2>
     <form th:action="@{/pelicula/creada}" th:object="${pelicula}" method="post">
         <input hidden th:field="*{id}">
         <div class="user-box">
@@ -16,6 +16,10 @@
         <div class="user-box">
             <input type="text" name = "director" th:field = "*{director}">
             <label>Director</label>
+        </div>
+        <div class="user-box">
+            <input type="text" name = "sinopsis" th:field = "*{sinopsis}">
+            <label>Sinopsis</label>
         </div>
         <div class="user-box">
             <input type="number" name = "duracion" th:field = "*{duracion}">

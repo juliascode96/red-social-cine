@@ -1,10 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-
+<div th:object="${pelicula}">
+    <p th:text="*{titulo}"></p>
+    <p th:text="*{director}"></p>
+    <p th:text="*{sinopsis}"></p>
+</div>
+<h2>Comentarios</h2>
+<div th:each="comentario : ${comentarios}">
+    <p th:text="${comentario.texto}"></p>
+</div>
+<h2>Nuevo comentario</h2>
+<form th:action="@{/pelicula/detalles/{idP}/nuevo (idP = ${pelicula.id})}" th:object="${comentario}" method="post">
+        <input hidden th:field="*{id}">
+    <div class="user-box">
+        <input type="text" name = "texto" th:field = "*{texto}">
+    </div>
+    <button type="submit" class="boton">Submit</button>
+</form>
 </body>
 </html>

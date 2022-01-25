@@ -13,6 +13,7 @@
         <th scope="col">Duración</th>
         <th scope="col">Genero</th>
         <th scope="col">año</th>
+        <th scope="col">Detalles</th>
         <th scope="col">Editar Pelicula</th>
         <th scope="col">Eliminar Pelicula</th>
     </tr>
@@ -25,9 +26,11 @@
         <td th:text="${pelicula.duracion}"></td>
         <td th:text="${pelicula.genero}"></td>
         <td th:text="${pelicula.anio}"></td>
+        <td><a th:href="@{/pelicula/detalles/{id}(id=${pelicula.id})}" class = "boton">Mostrar más</a></td>
         <td><a th:href="@{/pelicula/editar/{id}(id=${pelicula.id})}" class = "boton">Editar</a></td>
-        <td><button type="button" class="btn btn-danger">Dar de baja</button></td>
+        <td><a th:href="@{/pelicula/borrar/{id}(id=${pelicula.id})}" class = "boton">Dar de baja</a></td>
     </tr>
+    <td><a th:href="@{/pelicula/nueva}" class = "boton">Agregar película</a></td>
     </tbody>
 </table>
 </body>

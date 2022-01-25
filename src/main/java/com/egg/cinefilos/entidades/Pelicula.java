@@ -24,6 +24,7 @@ public class Pelicula {
     @ElementCollection
     private Set<String> actores;
 
+    private String sinopsis;
     private Integer duracion;
     private String genero;
     private Integer anio;
