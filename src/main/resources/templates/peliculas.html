@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cinefilos</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th scope="col">Titulo</th>
+        <th scope="col">Director</th>
+        <th scope="col">Duración</th>
+        <th scope="col">Genero</th>
+        <th scope="col">año</th>
+        <th scope="col">Detalles</th>
+        <th scope="col">Editar Pelicula</th>
+        <th scope="col">Eliminar Pelicula</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="pelicula : ${peliculas}">
+        <td th:text="${pelicula.titulo}"></td>
+        <td th:text="${pelicula.director}"></td>
+        <td th:text="${pelicula.duracion}"></td>
+        <td th:text="${pelicula.genero}"></td>
+        <td th:text="${pelicula.anio}"></td>
+        <td><a th:href="@{/pelicula/detalles/{id}(id=${pelicula.id})}" class = "boton">Mostrar más</a></td>
+        <td><a th:href="@{/pelicula/editar/{id}(id=${pelicula.id})}" class = "boton">Editar</a></td>
+        <td><a th:href="@{/pelicula/borrar/{id}(id=${pelicula.id})}" class = "boton">Dar de baja</a></td>
+    </tr>
+    <td><a th:href="@{/pelicula/nueva}" class = "boton">Agregar película</a></td>
+    </tbody>
+</table>
+</body>
+</html>

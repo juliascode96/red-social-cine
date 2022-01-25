@@ -18,16 +18,18 @@ public class Comentario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String comentario;
+    private String texto;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "pelicula_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Pelicula pelicula;
 
+    /*
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "usuario_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Usuario usuario;
+     */
 
 }

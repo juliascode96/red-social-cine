@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface RepoPelicula extends CrudRepository<Pelicula, Long> {
     Pelicula findByTitulo(String titulo);
-    Pelicula findByTituloContaining(String titulo);
+    List<Pelicula> findByTituloContaining(String titulo);
     List<Pelicula> findByDirector(String director);
     List<Pelicula> findByDirectorContaining(String director);
     List<Pelicula> findByGenero(String genero);
