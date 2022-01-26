@@ -6,12 +6,12 @@ import com.egg.cinefilos.excepciones.ErrorServicio;
 import com.egg.cinefilos.servicios.ComentarioServicio;
 import com.egg.cinefilos.servicios.PeliculaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/pelicula")
@@ -31,7 +31,8 @@ public class PeliculaControl {
     }
 
     @PostMapping("/creada")
-    public String crearPelicula(@ModelAttribute("pelicula") Pelicula pelicula) {
+    public String crearPelicula(@ModelAttribute("pelicula") Pelicula pelicula, Authentication auth) {
+        System.out.println(auth.getName());
         try {
             peliculaServicio.CreacionPelicula(pelicula);
             return "redirect:/pelicula/todas";
