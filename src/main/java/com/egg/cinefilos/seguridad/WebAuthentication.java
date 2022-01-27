@@ -2,7 +2,6 @@ package com.egg.cinefilos.seguridad;
 
 import com.egg.cinefilos.entidades.Usuario;
 import com.egg.cinefilos.repositorios.RepUsuario;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.User;
@@ -14,10 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 @Configuration
 public class WebAuthentication extends GlobalAuthenticationConfigurerAdapter {
@@ -35,10 +30,10 @@ public class WebAuthentication extends GlobalAuthenticationConfigurerAdapter {
 
             //Ordinal 0 for ENUM UserRol = ADMIN
             if (usuario.getRol().ordinal() == 0) {
-                return new User(usuario.getUsername(), usuario.getContrasenia(), AuthorityUtils.commaSeparatedStringToAuthorityList("ADMIN,CLIENT"));
+                return new User(usuario.getUsername(), usuario.getContrasenia(), AuthorityUtils.commaSeparatedStringToAuthorityList("ADMIN,USER"));
             }
 
-            return new User(usuario.getUsername(), usuario.getContrasenia(), AuthorityUtils.createAuthorityList("CLIENT"));
+            return new User(usuario.getUsername(), usuario.getContrasenia(), AuthorityUtils.createAuthorityList("USER"));
         });
     }
 

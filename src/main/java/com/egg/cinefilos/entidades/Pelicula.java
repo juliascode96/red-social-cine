@@ -31,6 +31,9 @@ public class Pelicula {
     private Integer valoracion;
     private Integer cantValoracion;
 
+    @OneToOne
+    private Foto foto;
+
     public Pelicula(String titulo, String director, Set<String> actores, Integer duracion, String genero, Integer anio) {
         this.titulo = titulo;
         this.director = director;
@@ -38,5 +41,16 @@ public class Pelicula {
         this.duracion = duracion;
         this.genero = genero;
         this.anio = anio;
+    }
+
+    public Pelicula(String titulo, String director, Set<String> actores, String sinopsis, Integer duracion, String genero, Integer anio, Foto foto) {
+        this.titulo = titulo;
+        this.director = director;
+        this.actores = actores;
+        this.sinopsis = sinopsis;
+        this.duracion = duracion;
+        this.genero = genero;
+        this.anio = anio;
+        this.foto = foto;
     }
 }

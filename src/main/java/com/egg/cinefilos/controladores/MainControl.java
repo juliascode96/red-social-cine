@@ -9,4 +9,9 @@ public class MainControl {
     public String inicio() {
         return "index.html";
     }
+
+    @GetMapping("/error")
+    public String error() {
+        return "error";
+    }
 }

@@ -1,15 +1,17 @@
 package com.egg.cinefilos.controladores;
 
 import com.egg.cinefilos.entidades.Comentario;
+import com.egg.cinefilos.entidades.Foto;
 import com.egg.cinefilos.entidades.Pelicula;
 import com.egg.cinefilos.excepciones.ErrorServicio;
 import com.egg.cinefilos.servicios.ComentarioServicio;
+import com.egg.cinefilos.servicios.FotoServicio;
 import com.egg.cinefilos.servicios.PeliculaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 
@@ -23,6 +25,9 @@ public class PeliculaControl {
     @Autowired
     ComentarioServicio comenSV;
 
+    @Autowired
+    FotoServicio fotosv;
+
     @GetMapping("/nueva")
     public String nuevaPeliculaForm(Model model) {
         Pelicula pelicula = new Pelicula();
@@ -31,13 +36,14 @@ public class PeliculaControl {
     }
 
     @PostMapping("/creada")
-    public String crearPelicula(@ModelAttribute("pelicula") Pelicula pelicula, Authentication auth) {
-        System.out.println(auth.getName());
+    public String crearPelicula(@ModelAttribute("pelicula") Pelicula pelicula, MultipartFile archivo) {
         try {
+            Foto foto = fotosv.guardar(archivo);
+            pelicula.setFoto(foto);
             peliculaServicio.CreacionPelicula(pelicula);
             return "redirect:/pelicula/todas";
         }catch (ErrorServicio e) {
-            return "error.html";
+            return "redirect:/error";
         }
     }
 
@@ -57,10 +63,10 @@ public class PeliculaControl {
     @PostMapping("/{id}")
     public String editarPelicula(@PathVariable Long id, Model model, @ModelAttribute("pelicula") Pelicula p1) {
             try {
-                peliculaServicio.modificarPelicula(p1.getId(), p1.getTitulo(), p1.getDirector(), p1.getActores(), p1.getDuracion(), p1.getGenero(), p1.getAnio(), p1.getValoracion(), p1.getCantValoracion());
+                peliculaServicio.modificarPelicula(p1.getId(), p1.getTitulo(), p1.getDirector(), p1.getActores(), p1.getDuracion(), p1.getGenero(), p1.getAnio(), p1.getValoracion(), p1.getCantValoracion(), (MultipartFile) p1.getFoto());
                 return "redirect:/pelicula/todas";
             } catch (ErrorServicio e) {
-                return "error";
+                return "redirect:/error";
             }
     }
 
@@ -70,7 +76,7 @@ public class PeliculaControl {
             peliculaServicio.eliminarPelicula(id);
             return "redirect:/pelicula/todas";
         } catch (ErrorServicio e) {
-            return "error.html";
+            return "redirect:/error";
         } finally {
             return "redirect:/pelicula/todas";
         }

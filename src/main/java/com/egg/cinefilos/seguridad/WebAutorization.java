@@ -26,7 +26,15 @@ public class WebAutorization extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //Required authorization to access different endpoints
         http.authorizeRequests()
-                .antMatchers("/pelicula/todas").hasAuthority("ADMIN");
+                .antMatchers("/pelicula/todas").hasAuthority("ADMIN")
+                .antMatchers("/pelicula/nueva").hasAuthority("ADMIN")
+                .antMatchers("/pelicula/editar/**").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST, "/pelicula/borrar/**").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST, "/pelicula/detalles/**").authenticated()
+                .antMatchers("/").permitAll()
+                .antMatchers( "/pelicula/detalles/**").permitAll();
+
+
                 /*
                 .antMatchers("/web/index.html", "/web/styles/**", "/web/scripts/**", "/web/assets/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/clients").permitAll()

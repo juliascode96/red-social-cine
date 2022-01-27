@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class PeliculaServicio {
@@ -69,7 +70,7 @@ public class PeliculaServicio {
 
     @Transactional
     public Pelicula modificarPelicula(Long id, String titulo, String director,
-            Set<String> actores, Integer duracion, String genero, Integer anio, Integer valoracion, Integer cantValoracion) throws ErrorServicio {
+                                      Set<String> actores, Integer duracion, String genero, Integer anio, Integer valoracion, Integer cantValoracion, MultipartFile archivo) throws ErrorServicio {
 
         validar(titulo, director, actores, duracion, genero, anio, valoracion, cantValoracion);
 
@@ -88,6 +89,25 @@ public class PeliculaServicio {
             return repopeli.save(pelicula);
         } else {
             throw new ErrorServicio("No se pudo encontrar el id");
+        }
+    }
+
+    @Transactional
+    public Pelicula valorar(Long id, int valoracion) throws ErrorServicio{
+        if(valoracion > 5 || valoracion < 1) {
+            throw new ErrorServicio("Valoración no válida");
+        }
+
+        Optional<Pelicula> respuesta = repopeli.findById(id);
+
+        if (respuesta.isPresent()) {
+            Pelicula p1 = respuesta.get();
+            p1.setCantValoracion(p1.getCantValoracion()+1);
+            p1.setValoracion((p1.getValoracion()+valoracion)/p1.getCantValoracion());
+
+            return repopeli.save(p1);
+        } else {
+            throw new ErrorServicio("Pelicula no encontrada");
         }
     }
 

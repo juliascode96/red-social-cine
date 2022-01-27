@@ -12,7 +12,10 @@
 </div>
 <h2>Comentarios</h2>
 <div th:each="comentario : ${comentarios}">
-    <p th:text="${comentario.texto}"></p>
+    <div>
+        <p th:text="${comentario.usuario.username}"></p>
+        <p th:text="${comentario.texto}"></p>
+    </div>
 </div>
 <h2>Nuevo comentario</h2>
 <form th:action="@{/pelicula/detalles/{idP}/nuevo (idP = ${pelicula.id})}" th:object="${comentario}" method="post">
