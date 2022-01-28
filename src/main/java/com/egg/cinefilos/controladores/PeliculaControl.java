@@ -3,7 +3,9 @@ package com.egg.cinefilos.controladores;
 import com.egg.cinefilos.entidades.Comentario;
 import com.egg.cinefilos.entidades.Foto;
 import com.egg.cinefilos.entidades.Pelicula;
+import com.egg.cinefilos.entidades.Valoracion;
 import com.egg.cinefilos.excepciones.ErrorServicio;
+import com.egg.cinefilos.repositorios.RepoValoracion;
 import com.egg.cinefilos.servicios.ComentarioServicio;
 import com.egg.cinefilos.servicios.FotoServicio;
 import com.egg.cinefilos.servicios.PeliculaServicio;
@@ -27,6 +29,9 @@ public class PeliculaControl {
 
     @Autowired
     FotoServicio fotosv;
+
+    @Autowired
+    RepoValoracion repoValoracion;
 
     @GetMapping("/nueva")
     public String nuevaPeliculaForm(Model model) {
@@ -63,7 +68,7 @@ public class PeliculaControl {
     @PostMapping("/{id}")
     public String editarPelicula(@PathVariable Long id, Model model, @ModelAttribute("pelicula") Pelicula p1) {
             try {
-                peliculaServicio.modificarPelicula(p1.getId(), p1.getTitulo(), p1.getDirector(), p1.getActores(), p1.getDuracion(), p1.getGenero(), p1.getAnio(), p1.getValoracion(), p1.getCantValoracion(), (MultipartFile) p1.getFoto());
+                peliculaServicio.modificarPelicula(p1.getId(), p1.getTitulo(), p1.getDirector(), p1.getActores(), p1.getDuracion(), p1.getGenero(), p1.getAnio(), (MultipartFile) p1.getFoto());
                 return "redirect:/pelicula/todas";
             } catch (ErrorServicio e) {
                 return "redirect:/error";
@@ -90,8 +95,9 @@ public class PeliculaControl {
         model.addAttribute("comentarios", comentarios);
         Comentario c = new Comentario();
         model.addAttribute("comentario", c);
+        Valoracion v = repoValoracion.findByPeliculaId(id);
+        model.addAttribute("valoracion", v);
         return "pelicula";
     }
-
 
 }

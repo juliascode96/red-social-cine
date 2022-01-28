@@ -28,8 +28,7 @@ public class Pelicula {
     private Integer duracion;
     private String genero;
     private Integer anio;
-    private Integer valoracion;
-    private Integer cantValoracion;
+
 
     @OneToOne
     private Foto foto;

@@ -7,7 +7,7 @@
 <body>
 <div>
     <h2>Nueva pelicula</h2>
-    <form th:action="@{/pelicula/creada}" th:object="${pelicula}" method="post">
+    <form th:action="@{/pelicula/creada}" th:object="${pelicula}" method="post" enctype="multipart/form-data">
         <input hidden th:field="*{id}">
         <div class="user-box">
             <input type="text" name = "titulo" th:field = "*{titulo}">
@@ -34,7 +34,7 @@
             <label>Año</label>
         </div>
         <div class="user-box">
-            <input type="file" name = "archivo" th:field = "*{foto.contenido}">
+            <input type="file" name = "archivo" th:field = "*{foto}">
             <label>Poster</label>
         </div>
         <button type="submit" class="boton">Submit</button>

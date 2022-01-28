@@ -10,8 +10,11 @@ public class MainControl {
         return "index.html";
     }
 
+    /*
     @GetMapping("/error")
     public String error() {
         return "error";
     }
+
+     */
 }
