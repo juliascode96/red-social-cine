@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:object="${comentario}">
+    <p th:text="*{usuario.username}"></p>
+    <p th:text="*{texto}"></p>
+</div>
+<h2>Respuestas</h2>
+<div th:each="r : ${respuestas}">
+    <div>
+        <p th:text="${r.usuario.username}"></p>
+        <p th:text="${r.texto}"></p>
+    </div>
+</div>
+<h2>Responder</h2>
+<form th:action="@{/pelicula/detalles/{idP}/comentario/{idC}/nueva_respuesta (idP = ${pelicula.id}, idC=${comentario.id})}" th:object="${nuevaRespuesta}" method="post">
+    <input hidden th:field="*{id}">
+    <div class="user-box">
+        <input type="text" name = "texto" th:field = "*{texto}">
+    </div>
+    <button type="submit" class="boton">Submit</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Cinefilos</title>
+</head>
+<body>
+<div>
+  <h2>Iniciar sesion</h2>
+  <form th:action="@{/api/login}" th:object="${usuario}" method="post">
+    <div class="user-box">
+      <input type="text" name = "username" th:field = "*{username}">
+      <label>Nombre de usuario</label>
+    </div>
+    <div class="user-box">
+      <input type="password" name = "contrasenia" th:field = "*{contrasenia}">
+      <label>Contraseña</label>
+    </div>
+    <button type="submit" class="boton">Submit</button>
+  </form>
+</div>
+</body>
+</html>

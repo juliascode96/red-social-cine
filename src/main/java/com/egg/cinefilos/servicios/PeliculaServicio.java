@@ -1,16 +1,19 @@
 package com.egg.cinefilos.servicios;
 
 import com.egg.cinefilos.entidades.Pelicula;
+import com.egg.cinefilos.entidades.Valoracion;
 import com.egg.cinefilos.excepciones.ErrorServicio;
 import com.egg.cinefilos.repositorios.RepoPelicula;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import javax.transaction.Transactional;
+
+import com.egg.cinefilos.repositorios.RepoValoracion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class PeliculaServicio {
@@ -18,9 +21,12 @@ public class PeliculaServicio {
     @Autowired
     private RepoPelicula repopeli;
 
+    @Autowired
+    private RepoValoracion repoValoracion;
+
     public void validar(String titulo, String director,
             Set<String> actores, Integer duracion, String genero,
-            Integer anio, Integer valoracion, Integer cantValoracion) throws ErrorServicio {
+            Integer anio) throws ErrorServicio {
 
         if (titulo == null || titulo.isEmpty()) {
             throw new ErrorServicio("El título de la película no puede ser nulo");
@@ -48,30 +54,22 @@ public class PeliculaServicio {
         if (anio == null || anio<0) {
             throw new ErrorServicio("El año de la película no puede ser nulo");
         }
-
-        /*
-        if (valoracion == null || valoracion<0) {
-            throw new ErrorServicio("La valoración de la película no puede ser nula");
-        }
-
-        if (cantValoracion == null || valoracion <0) {
-            throw new ErrorServicio("La cantidad de valoraciones no puede ser nula");
-        }
-         */
     }
 
     @Transactional
     public void CreacionPelicula(Pelicula pelicula) throws ErrorServicio {
 
-        validar(pelicula.getTitulo(), pelicula.getDirector(), pelicula.getActores(), pelicula.getDuracion(), pelicula.getGenero(), pelicula.getAnio(), pelicula.getValoracion(), pelicula.getCantValoracion());
+        validar(pelicula.getTitulo(), pelicula.getDirector(), pelicula.getActores(), pelicula.getDuracion(), pelicula.getGenero(), pelicula.getAnio());
+        Valoracion v = new Valoracion(0d,0d,0d,0d, pelicula);
+        repoValoracion.save(v);
         repopeli.save(pelicula);
     }
 
     @Transactional
     public Pelicula modificarPelicula(Long id, String titulo, String director,
-            Set<String> actores, Integer duracion, String genero, Integer anio, Integer valoracion, Integer cantValoracion) throws ErrorServicio {
+                                      Set<String> actores, Integer duracion, String genero, Integer anio, MultipartFile archivo) throws ErrorServicio {
 
-        validar(titulo, director, actores, duracion, genero, anio, valoracion, cantValoracion);
+        validar(titulo, director, actores, duracion, genero, anio);
 
         Optional<Pelicula> respuesta = repopeli.findById(id);
         if (respuesta.isPresent()) {
@@ -82,8 +80,6 @@ public class PeliculaServicio {
         pelicula.setDuracion(duracion);
         pelicula.setGenero(genero);
         pelicula.setAnio(anio);
-        pelicula.setValoracion(valoracion);
-        pelicula.setCantValoracion(cantValoracion);
 
             return repopeli.save(pelicula);
         } else {

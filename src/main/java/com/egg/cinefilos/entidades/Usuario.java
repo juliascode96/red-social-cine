@@ -18,8 +18,11 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String usarname;
+    private String username;
     private String contrasenia;
+
+    @Enumerated(EnumType.STRING)
+    private Roles rol;
 
     @OneToMany
     private Set<Pelicula> peliculasFavoritas;
@@ -28,7 +31,7 @@ public class Usuario {
     private Set<Pelicula> peliculasPorVer;
 
     public Usuario(String usarname, String contrasenia) {
-        this.usarname = usarname;
+        this.username = usarname;
         this.contrasenia = contrasenia;
     }
 }

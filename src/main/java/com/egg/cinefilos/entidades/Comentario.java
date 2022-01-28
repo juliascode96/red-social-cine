@@ -25,11 +25,11 @@ public class Comentario {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Pelicula pelicula;
 
-    /*
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "usuario_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Usuario usuario;
-     */
+
 
 }

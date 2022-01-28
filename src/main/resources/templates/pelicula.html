@@ -10,9 +10,30 @@
     <p th:text="*{director}"></p>
     <p th:text="*{sinopsis}"></p>
 </div>
+
+<div th:object="${valoracion}">
+    <p th:text="*{promedio}"></p>
+</div>
+
+<div>
+    <form th:action="@{/pelicula/detalles/{idP}/valorar (idP=${pelicula.id})}" th:object="${valoracion}" method="post">
+        <select th:field="*{ultima}">
+            <option th:value="1" th:text="1"></option>
+            <option th:value="2" th:text="2"></option>
+            <option th:value="3" th:text="3"></option>
+            <option th:value="4" th:text="4"></option>
+            <option th:value="5" th:text="5"></option>
+        </select>
+        <button type="submit" class="boton">Submit</button>
+    </form>
+</div>
 <h2>Comentarios</h2>
 <div th:each="comentario : ${comentarios}">
-    <p th:text="${comentario.texto}"></p>
+    <div>
+        <p th:text="${comentario.usuario.username}"></p>
+        <p th:text="${comentario.texto}"></p>
+        <a th:href="@{/pelicula/detalles/{idP}/comentario/{idC} (idP=${pelicula.id}, idC=${comentario.id})}">Responder</a>
+    </div>
 </div>
 <h2>Nuevo comentario</h2>
 <form th:action="@{/pelicula/detalles/{idP}/nuevo (idP = ${pelicula.id})}" th:object="${comentario}" method="post">
