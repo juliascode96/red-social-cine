@@ -2,6 +2,7 @@ package com.egg.cinefilos.controladores;
 
 import com.egg.cinefilos.entidades.*;
 import com.egg.cinefilos.excepciones.ErrorServicio;
+import com.egg.cinefilos.repositorios.RepoPelicula;
 import com.egg.cinefilos.repositorios.RepoValoracion;
 import com.egg.cinefilos.servicios.ComentarioServicio;
 import com.egg.cinefilos.servicios.FotoServicio;
@@ -20,6 +21,9 @@ public class PeliculaControl {
 
     @Autowired
     PeliculaServicio peliculaServicio;
+
+    @Autowired
+    RepoPelicula repoPelicula;
 
     @Autowired
     ComentarioServicio comenSV;
@@ -95,6 +99,8 @@ public class PeliculaControl {
         model.addAttribute("comentario", c);
         Valoracion v = repoValoracion.findByPeliculaId(id);
         model.addAttribute("valoracion", v);
+        ValoracionComentario vc = new ValoracionComentario();
+        model.addAttribute("valoracionC", vc);
         return "pelicula";
     }
 
@@ -102,6 +108,18 @@ public class PeliculaControl {
     public String mostrarPorGenero(@PathVariable String genero, Model model) {
         model.addAttribute("peliculas", peliculaServicio.buscarPorGenero(genero));
         return "peliculas_por_genero";
+    }
+
+    @GetMapping("/ver-todas/{ref}")
+    public String listaDePeliculas(@PathVariable Integer ref, Model model) {
+        if(ref == 0) {
+            model.addAttribute("peliculas", peliculaServicio.mostrarTodas());
+        } else if(ref == 1) {
+            model.addAttribute("peliculas", repoPelicula.findByOrderByTituloAsc());
+        } else if(ref == 2){
+            model.addAttribute("peliculas", repoPelicula.findByOrderByDirectorAsc());
+        }
+        return "lista_peliculas";
     }
 
 }

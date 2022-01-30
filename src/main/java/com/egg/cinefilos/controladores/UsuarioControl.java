@@ -89,4 +89,15 @@ public class UsuarioControl {
         }
     }
 
+    @PostMapping("/usuario/{username}/seguir")
+    public String seguirUsuario(@PathVariable String username, @ModelAttribute("usuario") Usuario usuario, Authentication auth) {
+        usuario = repUsuario.findByUsername(auth.getName()).get();
+        try {
+            usuarioServicio.seguirUsuario(usuario, username);
+            return "redirect:/usuario/{username}";
+        } catch (ErrorServicio e) {
+            return null;
+        }
+    }
+
 }

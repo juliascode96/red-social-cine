@@ -20,6 +20,7 @@ public class Usuario {
 
     private String username;
     private String contrasenia;
+    private Double puntaje;
 
     @Enumerated(EnumType.STRING)
     private Role rol;
@@ -29,6 +30,9 @@ public class Usuario {
 
     @OneToMany
     private Set<Pelicula> peliculasPorVer;
+
+    @OneToMany
+    private Set<Usuario> seguidos;
 
     public Usuario(String usarname, String contrasenia) {
         this.username = usarname;

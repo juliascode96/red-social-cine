@@ -25,7 +25,8 @@
                     <li class="nav-item dropdown" th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')}">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" th:text="${#authentication.getName}"></a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item link-danger" th:href="@{/usuario/{username} (username = ${#authentication.getName})}">Ver perfil</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/personal}">Mi feed</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/usuario/{username} (username = ${#authentication.getName})}">Mi perfil</a></li>
                             <li class="nav-item" th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
                                 <a class="dropdown-item link-danger" th:case="${true}" th:href="@{/logout}">Cerrar sesión</a>
                             </li>
@@ -33,7 +34,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/pelicula/ver-todas}">Ver todas</a>
+                        <a class="nav-link" th:href="@{/pelicula/ver-todas/0}">Ver todas</a>
                     </li>
                     <div sec:authorize-url="/pelicula/todas">
                         <li class="nav-item">
@@ -65,6 +66,7 @@
     </nav>
 </header>
 <main>
+
     <div class="text-center"><img src="/h1.png" width="300"></div>
 
     <div id="demo" class="carousel slide text-center" data-ride="carousel">
@@ -106,8 +108,8 @@
            <div class="card-body">
                <p class="card-text" th:text="${valoracion.promedio}"></p>
                <h5 class="card-title" th:text="${valoracion.pelicula.titulo}"></h5>
-               <p class="card-text" th:text="${valoracion.pelicula.sinopsis}"></p>
-               <a th:href="@{/pelicula/detalles/{id} (id = ${valoracion.pelicula.id})}" class="btn btn-danger">Ver más</a>
+               <p class="card-text" th:text="${valoracion.pelicula.extracto}"></p>
+               <a th:href="@{/pelicula/detalles/{id} (id = ${valoracion.pelicula.id})}" class="btn btn-danger">Ver detalles</a>
            </div>
        </div>
    </div>
@@ -120,11 +122,28 @@
             <img class="card-img-top" src="..." alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title" th:text="${pelicula.titulo}"></h5>
-                <p class="card-text" th:text="${pelicula.sinopsis}"></p>
-                <a th:href="@{/pelicula/detalles/{id} (id = ${pelicula.id})}" class="btn btn-danger">Ver más</a>
+                <p class="card-text" th:text="${pelicula.extracto}"></p>
+                <a th:href="@{/pelicula/detalles/{id} (id = ${pelicula.id})}" class="btn btn-danger">Ver detalles</a>
             </div>
         </div>
     </div>
+
+    <div class="text-center mt-3 row justify-content-evenly">
+        <h2>Top de reseñas</h2>
+        <div th:each="resenia : ${topResenias}"  class="card col-md-4" style="width: 18rem;">
+            <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${resenia.comentario.pelicula.titulo}"></h5>
+                <a th:href="@{/usuario/{username} (username = ${resenia.comentario.usuario.username})}" th:text="${resenia.comentario.usuario.username}"></a>
+                <br><a th:href="@{/pelicula/detalles/{id}/comentario/{idC} (id = ${resenia.comentario.pelicula.id}, idC = ${resenia.comentario.id})}" class="btn btn-danger">Ver reseña</a>
+            </div>
+        </div>
+    </div>
+    <h2>Top usuarios</h2>
+    <ul th:each="usuario : ${topUsuarios}">
+        <li><a th:text="${usuario.username}" th:href="@{/usuario/{username} (username = ${usuario.username})}"></a></li>
+    </ul>
+
 </main>
 </body>
 </html>

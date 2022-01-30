@@ -31,5 +31,8 @@ public class Comentario {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Usuario usuario;
 
+    @OneToOne(mappedBy = "comentario")
+    private ValoracionComentario valoracion;
+
 
 }

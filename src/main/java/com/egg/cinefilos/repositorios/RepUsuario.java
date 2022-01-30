@@ -12,4 +12,5 @@ public interface RepUsuario extends CrudRepository<Usuario, Long> {
 
     Optional<Usuario> findByUsername(String inputName);
     List<Usuario> findByUsernameContaining(String username);
+    List<Usuario> findTop10ByOrderByPuntajeDesc();
 }

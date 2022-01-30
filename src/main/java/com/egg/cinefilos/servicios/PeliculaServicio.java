@@ -70,6 +70,7 @@ public class PeliculaServicio {
         validar(pelicula.getTitulo(), pelicula.getDirector(), pelicula.getActores(), pelicula.getDuracion(), pelicula.getGenero(), pelicula.getAnio());
         Valoracion v = new Valoracion(0d,0d,0d,0d, pelicula);
         repoValoracion.save(v);
+        pelicula.setExtracto(pelicula.getSinopsis().substring(0, 300).concat("..."));
         repopeli.save(pelicula);
     }
 
@@ -88,7 +89,7 @@ public class PeliculaServicio {
         pelicula.setDuracion(duracion);
         pelicula.setGenero(genero);
         pelicula.setAnio(anio);
-
+        pelicula.setExtracto(pelicula.getSinopsis().substring(0, 300).concat("..."));
             return repopeli.save(pelicula);
         } else {
             throw new ErrorServicio("No se pudo encontrar el id");

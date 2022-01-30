@@ -14,4 +14,6 @@ public interface RepoPelicula extends CrudRepository<Pelicula, Long> {
     List<Pelicula> findByDirectorContaining(String director);
     List<Pelicula> findByGeneroContaining(String genero);
     List<Pelicula> findTop4ByOrderByIdDesc();
+    List<Pelicula> findByOrderByTituloAsc();
+    List<Pelicula> findByOrderByDirectorAsc();
 }

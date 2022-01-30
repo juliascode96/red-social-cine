@@ -25,7 +25,8 @@
                     <li class="nav-item dropdown" th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')}">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" th:text="${#authentication.getName}"></a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item link-danger" th:href="@{/usuario/{username} (username = ${#authentication.getName})}">Ver perfil</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/personal}">Mi feed</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/usuario/{username} (username = ${#authentication.getName})}">Mi perfil</a></li>
                             <li class="nav-item" th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
                                 <a class="dropdown-item link-danger" th:case="${true}" th:href="@{/logout}">Cerrar sesión</a>
                             </li>
@@ -33,7 +34,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/pelicula/ver-todas}">Ver todas</a>
+                        <a class="nav-link" th:href="@{/pelicula/ver-todas/0}">Ver todas</a>
                     </li>
                     <div sec:authorize-url="/pelicula/todas">
                         <li class="nav-item">

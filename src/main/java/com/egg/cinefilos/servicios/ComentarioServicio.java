@@ -2,8 +2,10 @@ package com.egg.cinefilos.servicios;
 
 import com.egg.cinefilos.entidades.Comentario;
 import com.egg.cinefilos.entidades.Respuesta;
+import com.egg.cinefilos.entidades.ValoracionComentario;
 import com.egg.cinefilos.excepciones.ErrorServicio;
 import com.egg.cinefilos.repositorios.RepoComentario;
+import com.egg.cinefilos.repositorios.RepoValoracionComentario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +21,16 @@ public class ComentarioServicio {
     @Autowired
     RespuestaServicio respuestaServicio;
 
+    @Autowired
+    RepoValoracionComentario repoValoracionComentario;
+
     @Transactional
     public void crearComentario(Comentario comentario) throws ErrorServicio {
         if(comentario.getTexto().isEmpty()) {
             throw new ErrorServicio("El comentario no puede estar vacío");
         } else {
+            ValoracionComentario v = new ValoracionComentario(0d,0d,0d,0d, comentario);
+            repoValoracionComentario.save(v);
             comenRepo.save(comentario);
         }
     }
@@ -47,6 +54,7 @@ public class ComentarioServicio {
                    respuestaServicio.borrarRespuesta(r.getId());
                }
            }
+           repoValoracionComentario.deleteById(repoValoracionComentario.findByComentarioId(id).getId());
            comenRepo.deleteById(id);
            return true;
        } catch (Exception e) {

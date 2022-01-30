@@ -25,6 +25,7 @@ public class Pelicula {
     private Set<String> actores;
 
     private String sinopsis;
+    private String extracto;
     private Integer duracion;
     private String genero;
     private Integer anio;
