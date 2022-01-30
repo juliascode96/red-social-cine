@@ -30,7 +30,7 @@ public class WebAuthentication extends GlobalAuthenticationConfigurerAdapter {
 
             //Ordinal 0 for ENUM UserRol = ADMIN
             if (usuario.getRol().ordinal() == 0) {
-                return new User(usuario.getUsername(), usuario.getContrasenia(), AuthorityUtils.commaSeparatedStringToAuthorityList("ADMIN,USER"));
+                return new User(usuario.getUsername(), usuario.getContrasenia(), AuthorityUtils.commaSeparatedStringToAuthorityList("ADMIN"));
             }
 
             return new User(usuario.getUsername(), usuario.getContrasenia(), AuthorityUtils.createAuthorityList("USER"));

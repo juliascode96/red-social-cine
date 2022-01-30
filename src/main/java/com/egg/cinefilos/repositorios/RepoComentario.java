@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface RepoComentario extends CrudRepository<Comentario, Long> {
     List<Comentario> findByPeliculaId(Long id);
+    List<Comentario> findByUsuarioId(Long id);
 }

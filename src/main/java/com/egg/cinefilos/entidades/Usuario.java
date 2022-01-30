@@ -22,7 +22,7 @@ public class Usuario {
     private String contrasenia;
 
     @Enumerated(EnumType.STRING)
-    private Roles rol;
+    private Role rol;
 
     @OneToMany
     private Set<Pelicula> peliculasFavoritas;

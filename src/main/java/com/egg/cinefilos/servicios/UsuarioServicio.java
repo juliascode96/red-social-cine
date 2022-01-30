@@ -1,7 +1,7 @@
 package com.egg.cinefilos.servicios;
 
 import com.egg.cinefilos.entidades.Pelicula;
-import com.egg.cinefilos.entidades.Roles;
+import com.egg.cinefilos.entidades.Role;
 import com.egg.cinefilos.entidades.Usuario;
 import com.egg.cinefilos.excepciones.ErrorServicio;
 import com.egg.cinefilos.repositorios.RepUsuario;
@@ -48,7 +48,7 @@ public class UsuarioServicio {
     public Usuario guardarUsuario(Usuario usuario) throws ErrorServicio{
         validar(usuario.getUsername(), usuario.getContrasenia());
         usuario.setContrasenia(passwordEncoder.encode(usuario.getContrasenia()));
-        usuario.setRol(Roles.USER);
+        usuario.setRol(Role.USER);
         return repUsuario.save(usuario);
     }
 

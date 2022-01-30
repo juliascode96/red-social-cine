@@ -1,9 +1,6 @@
 package com.egg.cinefilos.controladores;
 
-import com.egg.cinefilos.entidades.Comentario;
-import com.egg.cinefilos.entidades.Foto;
-import com.egg.cinefilos.entidades.Pelicula;
-import com.egg.cinefilos.entidades.Valoracion;
+import com.egg.cinefilos.entidades.*;
 import com.egg.cinefilos.excepciones.ErrorServicio;
 import com.egg.cinefilos.repositorios.RepoValoracion;
 import com.egg.cinefilos.servicios.ComentarioServicio;
@@ -33,6 +30,7 @@ public class PeliculaControl {
     @Autowired
     RepoValoracion repoValoracion;
 
+
     @GetMapping("/nueva")
     public String nuevaPeliculaForm(Model model) {
         Pelicula pelicula = new Pelicula();
@@ -41,10 +39,10 @@ public class PeliculaControl {
     }
 
     @PostMapping("/creada")
-    public String crearPelicula(@ModelAttribute("pelicula") Pelicula pelicula, MultipartFile archivo) {
+    public String crearPelicula(@ModelAttribute("pelicula") Pelicula pelicula) {
         try {
-            Foto foto = fotosv.guardar(archivo);
-            pelicula.setFoto(foto);
+            //Foto foto = fotosv.guardar(archivo);
+            //pelicula.setFoto(foto);
             peliculaServicio.CreacionPelicula(pelicula);
             return "redirect:/pelicula/todas";
         }catch (ErrorServicio e) {
@@ -68,7 +66,7 @@ public class PeliculaControl {
     @PostMapping("/{id}")
     public String editarPelicula(@PathVariable Long id, Model model, @ModelAttribute("pelicula") Pelicula p1) {
             try {
-                peliculaServicio.modificarPelicula(p1.getId(), p1.getTitulo(), p1.getDirector(), p1.getActores(), p1.getDuracion(), p1.getGenero(), p1.getAnio(), (MultipartFile) p1.getFoto());
+                peliculaServicio.modificarPelicula(p1.getId(), p1.getTitulo(), p1.getDirector(), p1.getActores(), p1.getDuracion(), p1.getGenero(), p1.getAnio()/*(MultipartFile) p1.getFoto()*/);
                 return "redirect:/pelicula/todas";
             } catch (ErrorServicio e) {
                 return "redirect:/error";
@@ -98,6 +96,12 @@ public class PeliculaControl {
         Valoracion v = repoValoracion.findByPeliculaId(id);
         model.addAttribute("valoracion", v);
         return "pelicula";
+    }
+
+    @GetMapping("/{genero}")
+    public String mostrarPorGenero(@PathVariable String genero, Model model) {
+        model.addAttribute("peliculas", peliculaServicio.buscarPorGenero(genero));
+        return "peliculas_por_genero";
     }
 
 }

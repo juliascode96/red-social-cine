@@ -1,6 +1,8 @@
 package com.egg.cinefilos.servicios;
 
+import com.egg.cinefilos.entidades.Comentario;
 import com.egg.cinefilos.entidades.Pelicula;
+import com.egg.cinefilos.entidades.Respuesta;
 import com.egg.cinefilos.entidades.Valoracion;
 import com.egg.cinefilos.excepciones.ErrorServicio;
 import com.egg.cinefilos.repositorios.RepoPelicula;
@@ -23,6 +25,12 @@ public class PeliculaServicio {
 
     @Autowired
     private RepoValoracion repoValoracion;
+
+    @Autowired
+    ComentarioServicio comenSV;
+
+    @Autowired
+    RespuestaServicio respuestaServicio;
 
     public void validar(String titulo, String director,
             Set<String> actores, Integer duracion, String genero,
@@ -67,7 +75,7 @@ public class PeliculaServicio {
 
     @Transactional
     public Pelicula modificarPelicula(Long id, String titulo, String director,
-                                      Set<String> actores, Integer duracion, String genero, Integer anio, MultipartFile archivo) throws ErrorServicio {
+                                      Set<String> actores, Integer duracion, String genero, Integer anio /*, MultipartFile archivo*/) throws ErrorServicio {
 
         validar(titulo, director, actores, duracion, genero, anio);
 
@@ -92,15 +100,17 @@ public class PeliculaServicio {
         return respuesta;
     }
 
-     private Iterable<Pelicula> listarPeliculas() {
-        return repopeli.findAll();
-    }
-
     @Transactional
     public void eliminarPelicula(Long id) throws ErrorServicio {
         Optional<Pelicula> respuesta = repopeli.findById(id);
         if (respuesta.isPresent()) {
             Pelicula pelicula = respuesta.get();
+
+            List<Comentario> comentarios = comenSV.buscarPorPelicula(id);
+            for(Comentario c : comentarios) {
+                comenSV.borrarComentario(c.getId());
+            }
+            repoValoracion.deleteById(repoValoracion.findByPeliculaId(id).getId());
             repopeli.deleteById(pelicula.getId());
         } else {
         }
@@ -124,7 +134,7 @@ public class PeliculaServicio {
     }
 
     public List<Pelicula> buscarPorGenero(String genero) {
-        return repopeli.findByGenero(genero);
+        return repopeli.findByGeneroContaining(genero);
     }
 
 

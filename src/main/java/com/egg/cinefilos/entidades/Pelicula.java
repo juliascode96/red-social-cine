@@ -30,8 +30,8 @@ public class Pelicula {
     private Integer anio;
 
 
-    @OneToOne
-    private Foto foto;
+    //@OneToOne
+    //private Foto foto;
 
     public Pelicula(String titulo, String director, Set<String> actores, Integer duracion, String genero, Integer anio) {
         this.titulo = titulo;
@@ -50,6 +50,6 @@ public class Pelicula {
         this.duracion = duracion;
         this.genero = genero;
         this.anio = anio;
-        this.foto = foto;
+        //this.foto = foto;
     }
 }

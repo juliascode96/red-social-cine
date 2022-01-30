@@ -65,35 +65,28 @@
     </nav>
 </header>
 <body>
-<div>
-    <h2>Editar pelicula</h2>
-    <form th:action="@{/pelicula/{id} (id = ${pelicula.id})}" th:object="${pelicula}" method="post">
-        <div class="user-box">
-            <input type="text" name = "titulo" th:field = "*{titulo}">
-            <label>Titulo</label>
-        </div>
-        <div class="user-box">
-            <input type="text" name = "director" th:field = "*{director}">
-            <label>Director</label>
-        </div>
-        <div class="user-box">
-            <input type="text" name = "sinopsis" th:field = "*{sinopsis}">
-            <label>Sinopsis</label>
-        </div>
-        <div class="user-box">
-            <input type="number" name = "duracion" th:field = "*{duracion}">
-            <label>Duracion</label>
-        </div>
-        <div class="user-box">
-            <input type="text" name = "genero" th:field = "*{genero}">
-            <label>Genero</label>
-        </div>
-        <div class="user-box">
-            <input type="number" name = "anio" th:field = "*{anio}">
-            <label>Año</label>
-        </div>
-        <button type="submit" class="boton">Submit</button>
-    </form>
-</div>
+<table>
+    <thead>
+    <tr>
+        <th scope="col">Titulo</th>
+        <th scope="col">Director</th>
+        <th scope="col">Duración</th>
+        <th scope="col">Genero</th>
+        <th scope="col">año</th>
+        <th scope="col">Detalles</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="pelicula : ${peliculas}">
+        <td th:text="${pelicula.titulo}"></td>
+        <td th:text="${pelicula.director}"></td>
+        <td th:text="${pelicula.duracion}"></td>
+        <td th:text="${pelicula.genero}"></td>
+        <td th:text="${pelicula.anio}"></td>
+        <td><a th:href="@{/pelicula/detalles/{id}(id=${pelicula.id})}" class = "boton">Mostrar más</a></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
