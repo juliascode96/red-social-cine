@@ -1,9 +1,9 @@
 package com.egg.cinefilos;
 
-import com.egg.cinefilos.entidades.Roles;
+import com.egg.cinefilos.entidades.Role;
 import com.egg.cinefilos.entidades.Usuario;
-import com.egg.cinefilos.entidades.Valoracion;
 import com.egg.cinefilos.repositorios.RepUsuario;
+import com.egg.cinefilos.repositorios.RepoPelicula;
 import com.egg.cinefilos.repositorios.RepoValoracion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -20,6 +20,9 @@ public class CinefilosApplication {
 	@Autowired
 	RepoValoracion repoValoracion;
 
+	@Autowired
+	RepoPelicula repoPelicula;
+
 	public static void main(String[] args) {
 		SpringApplication.run(CinefilosApplication.class, args);
 	}
@@ -29,7 +32,7 @@ public class CinefilosApplication {
 			Usuario usuario = new Usuario();
 			usuario.setContrasenia(passwordEncoder.encode("admin"));
 			usuario.setUsername("admin2");
-			usuario.setRol(Roles.ADMIN);
+			usuario.setRol(Role.ADMIN);
 
 			//repUsuario.save(usuario);
 		};

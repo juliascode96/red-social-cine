@@ -11,6 +11,7 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,6 +23,11 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 @EnableWebSecurity
 public class WebAutorization extends WebSecurityConfigurerAdapter {
 
+    @Bean
+    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
+        return new MySimpleUrlAuthenticationSuccessHandler();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //Required authorization to access different endpoints
@@ -31,8 +37,10 @@ public class WebAutorization extends WebSecurityConfigurerAdapter {
                 .antMatchers("/pelicula/editar/**").hasAuthority("ADMIN")
                 .antMatchers(HttpMethod.POST, "/pelicula/borrar/**").hasAuthority("ADMIN")
                 .antMatchers(HttpMethod.POST, "/pelicula/detalles/**").authenticated()
+                .antMatchers("/usuario/**").authenticated()
                 .antMatchers("/").permitAll()
-                .antMatchers( "/pelicula/detalles/**").permitAll();
+                .antMatchers( "/pelicula/detalles/**").permitAll()
+                .antMatchers( "/pelicula/genero/**").permitAll();
 
 
                 /*
@@ -50,12 +58,14 @@ public class WebAutorization extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .usernameParameter("username")
                 .passwordParameter("contrasenia")
-                .loginPage("/api/login");
+                .loginPage("/login")
+                .defaultSuccessUrl("/index", true);
 
 
         //Clearing cookies after logOut
         http.logout().
-                logoutUrl("/api/logout")
+                logoutUrl("/logout")
+                .logoutSuccessUrl("/")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true)
                 .clearAuthentication(true);

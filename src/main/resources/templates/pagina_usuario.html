@@ -65,36 +65,24 @@
         </div>
     </nav>
 </header>
-<div>
-    <h2>Nueva pelicula</h2>
-    <form th:action="@{/pelicula/creada}" th:object="${pelicula}" method="post" enctype="multipart/form-data">
-        <input hidden th:field="*{id}">
-        <div class="user-box">
-            <input type="text" name = "titulo" th:field = "*{titulo}">
-            <label>Titulo</label>
-        </div>
-        <div class="user-box">
-            <input type="text" name = "director" th:field = "*{director}">
-            <label>Director</label>
-        </div>
-        <div class="user-box">
-            <input type="text" name = "sinopsis" th:field = "*{sinopsis}">
-            <label>Sinopsis</label>
-        </div>
-        <div class="user-box">
-            <input type="number" name = "duracion" th:field = "*{duracion}">
-            <label>Duracion</label>
-        </div>
-        <div class="user-box">
-            <input type="text" name = "genero" th:field = "*{genero}">
-            <label>Genero</label>
-        </div>
-        <div class="user-box">
-            <input type="number" name = "anio" th:field = "*{anio}">
-            <label>Año</label>
-        </div>
-        <button type="submit" class="boton">Submit</button>
-    </form>
+<body>
+<h2 th:text="${usuarioAMostrar.username}"></h2>
+<p th:text="${usuarioAMostrar.getPuntaje()}"></p>
+<form th:action="@{/usuario/{username}/seguir (username = ${usuarioAMostrar.username})}" method="post">
+    <button type="submit" class="boton">Seguir</button>
+</form>
+<h3>Reseñas</h3>
+<div th:each="comentario : ${comentarios}">
+    <p th:text="${comentario.pelicula.titulo}"></p>
+    <p th:text="${comentario.texto}"></p>
+</div>
+<h3>Favoritas</h3>
+<div th:each="favorita : ${usuarioAMostrar.peliculasFavoritas}">
+    <a th:href="@{/pelicula/detalles/{id} (id = ${favorita.id})}" th:text="${favorita.titulo}"></a>
+</div>
+<h3>Por ver</h3>
+<div th:each="porVer : ${usuarioAMostrar.peliculasPorVer}">
+    <a th:href="@{/pelicula/detalles/{id} (id = ${porVer.id})}" th:text="${porVer.titulo}"></a>
 </div>
 </body>
 </html>

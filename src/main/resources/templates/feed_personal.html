@@ -65,36 +65,11 @@
         </div>
     </nav>
 </header>
-<div>
-    <h2>Nueva pelicula</h2>
-    <form th:action="@{/pelicula/creada}" th:object="${pelicula}" method="post" enctype="multipart/form-data">
-        <input hidden th:field="*{id}">
-        <div class="user-box">
-            <input type="text" name = "titulo" th:field = "*{titulo}">
-            <label>Titulo</label>
-        </div>
-        <div class="user-box">
-            <input type="text" name = "director" th:field = "*{director}">
-            <label>Director</label>
-        </div>
-        <div class="user-box">
-            <input type="text" name = "sinopsis" th:field = "*{sinopsis}">
-            <label>Sinopsis</label>
-        </div>
-        <div class="user-box">
-            <input type="number" name = "duracion" th:field = "*{duracion}">
-            <label>Duracion</label>
-        </div>
-        <div class="user-box">
-            <input type="text" name = "genero" th:field = "*{genero}">
-            <label>Genero</label>
-        </div>
-        <div class="user-box">
-            <input type="number" name = "anio" th:field = "*{anio}">
-            <label>Año</label>
-        </div>
-        <button type="submit" class="boton">Submit</button>
-    </form>
+<body>
+<div th:each="comentario : ${seguidos}">
+   <a th:text="${comentario.usuario.username}" th:href="@{/usuario/{username} (username = ${comentario.usuario.username})}"></a>
+    <a th:text="${comentario.pelicula.titulo}" th:href="@{/pelicula/detalles/{id} (id = ${comentario.pelicula.id})}"></a>
+    <p th:text="${comentario.texto}"></p>
 </div>
 </body>
 </html>
