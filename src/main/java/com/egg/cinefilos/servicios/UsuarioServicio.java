@@ -192,4 +192,54 @@ public class UsuarioServicio {
 
         return ultimosComentarios;
     }
+
+    public Usuario dejarDeSeguir(Usuario usuario, String username) throws ErrorServicio{
+        Optional<Usuario> respuesta = repUsuario.findById(usuario.getId());
+
+        if(respuesta.isPresent()) {
+            Usuario u1 = respuesta.get();
+            Optional<Usuario> resp = repUsuario.findByUsername(username);
+            if(resp.isPresent()) {
+                Usuario u2 = resp.get();
+                u1.getSeguidos().remove(u2);
+                return repUsuario.save(u1);
+            } else {
+                throw new ErrorServicio("Usted no sigue al usuario seleccionado");
+            }
+        } else {
+            throw new ErrorServicio("Usuario no encontrado");
+        }
+    }
+
+    public Usuario eliminarFavorita(Usuario usuario, Long id) throws ErrorServicio{
+
+        Optional<Usuario> respuesta = repUsuario.findById(usuario.getId());
+        if(respuesta.isPresent()) {
+            Usuario u = respuesta.get();
+
+            Pelicula peliculaEliminar = peliculaServicio.buscarPorId(id).get();
+            u.getPeliculasFavoritas().remove(peliculaEliminar);
+
+            return repUsuario.save(u);
+        } else {
+            throw new ErrorServicio("Usuario no encontrado");
+        }
+
+    }
+
+    public Usuario eliminarPorVer(Usuario usuario, Long id) throws ErrorServicio{
+
+        Optional<Usuario> respuesta = repUsuario.findById(usuario.getId());
+        if(respuesta.isPresent()) {
+            Usuario u = respuesta.get();
+
+            Pelicula peliculaEliminar = peliculaServicio.buscarPorId(id).get();
+            u.getPeliculasPorVer().remove(peliculaEliminar);
+
+            return repUsuario.save(u);
+        } else {
+            throw new ErrorServicio("Usuario no encontrado");
+        }
+
+    }
 }

@@ -59,8 +59,7 @@ public class WebAutorization extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("contrasenia")
                 .loginPage("/login")
-                .defaultSuccessUrl("/index", true);
-
+                .defaultSuccessUrl("/", true);
 
         //Clearing cookies after logOut
         http.logout().
@@ -83,17 +82,21 @@ public class WebAutorization extends WebSecurityConfigurerAdapter {
         http.exceptionHandling().
                 authenticationEntryPoint((req, res, exc) -> {
                     if (req.getRequestURI().contains("/web")) {
-                        res.sendRedirect("/web/index.html");
+                        res.sendRedirect("/index.html");
                     }
                 });
 
          */
 
-        http.formLogin().
+        /* http.formLogin().
                 successHandler((req, res, auth) -> clearAuthenticationAttributes(req));
+
+
 
         http.logout().
                 logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
+
+         */
     }
 
     @Bean

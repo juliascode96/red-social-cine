@@ -68,9 +68,20 @@
 <body>
 <h2 th:text="${usuarioAMostrar.username}"></h2>
 <p th:text="${usuarioAMostrar.getPuntaje()}"></p>
-<form th:action="@{/usuario/{username}/seguir (username = ${usuarioAMostrar.username})}" method="post">
-    <button type="submit" class="boton">Seguir</button>
-</form>
+
+<div th:switch="${seguidos.contains(usuarioAMostrar)}">
+    <div th:case="true">
+        <form th:action="@{/usuario/{username}/no_seguir (username = ${usuarioAMostrar.username})}" method="post">
+            <button type="submit" class="boton">Dejar de seguir</button>
+        </form>
+    </div>
+    <div th:case="false">
+        <form th:action="@{/usuario/{username}/seguir (username = ${usuarioAMostrar.username})}" method="post">
+            <button type="submit" class="boton">Seguir</button>
+        </form>
+    </div>
+</div>
+
 <h3>Reseñas</h3>
 <div th:each="comentario : ${comentarios}">
     <p th:text="${comentario.pelicula.titulo}"></p>

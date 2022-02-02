@@ -5,7 +5,6 @@ import com.egg.cinefilos.entidades.Usuario;
 import com.egg.cinefilos.excepciones.ErrorServicio;
 import com.egg.cinefilos.repositorios.RepUsuario;
 import com.egg.cinefilos.repositorios.RepoComentario;
-import com.egg.cinefilos.servicios.ComentarioServicio;
 import com.egg.cinefilos.servicios.PeliculaServicio;
 import com.egg.cinefilos.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +58,9 @@ public class UsuarioControl {
     }
 
     @GetMapping("/usuario/{username}")
-    public String paginaUsuario(@PathVariable String username, Model model) {
+    public String paginaUsuario(@PathVariable String username, Model model, Authentication auth) {
+        Usuario usuario = repUsuario.findByUsername(auth.getName()).get();
+        model.addAttribute("seguidos", usuario.getSeguidos());
         model.addAttribute("usuarioAMostrar", repUsuario.findByUsername(username).get());
         model.addAttribute("comentarios", repoComentario.findByUsuarioId(repUsuario.findByUsername(username).get().getId()));
         return "pagina_usuario";
@@ -89,11 +90,47 @@ public class UsuarioControl {
         }
     }
 
+    @PostMapping("/pelicula/favorita/{id}/eliminar")
+    public String eliminarFavorita(@PathVariable Long id, @ModelAttribute("usuario") Usuario usuario, Authentication auth) {
+       usuario = repUsuario.findByUsername(auth.getName()).get();
+
+        try {
+            usuarioServicio.eliminarFavorita(usuario, id);
+            return "redirect:/pelicula/detalles/{id}";
+        } catch (ErrorServicio e) {
+            return null;
+        }
+    }
+
+    @PostMapping("/pelicula/por_ver/{id}/eliminar")
+    public String eliminarPorVer(@PathVariable Long id, @ModelAttribute("usuario") Usuario usuario, Authentication auth) {
+        usuario = repUsuario.findByUsername(auth.getName()).get();
+
+        try {
+            usuarioServicio.eliminarPorVer(usuario, id);
+            return "redirect:/pelicula/detalles/{id}";
+        } catch (ErrorServicio e) {
+            return null;
+        }
+    }
+
     @PostMapping("/usuario/{username}/seguir")
     public String seguirUsuario(@PathVariable String username, @ModelAttribute("usuario") Usuario usuario, Authentication auth) {
         usuario = repUsuario.findByUsername(auth.getName()).get();
         try {
             usuarioServicio.seguirUsuario(usuario, username);
+            return "redirect:/usuario/{username}";
+        } catch (ErrorServicio e) {
+            return null;
+        }
+    }
+
+    @PostMapping("/usuario/{username}/no_seguir")
+    public String dejarDeSeguir(@PathVariable String username, @ModelAttribute("usuario") Usuario usuario, Authentication auth) {
+        usuario = repUsuario.findByUsername(auth.getName()).get();
+
+        try {
+            usuarioServicio.dejarDeSeguir(usuario, username);
             return "redirect:/usuario/{username}";
         } catch (ErrorServicio e) {
             return null;
