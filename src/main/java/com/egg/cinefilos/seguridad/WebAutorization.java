@@ -38,9 +38,13 @@ public class WebAutorization extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/pelicula/borrar/**").hasAuthority("ADMIN")
                 .antMatchers(HttpMethod.POST, "/pelicula/detalles/**").authenticated()
                 .antMatchers("/usuario/**").authenticated()
+                .antMatchers("/personal").authenticated()
                 .antMatchers("/").permitAll()
                 .antMatchers( "/pelicula/detalles/**").permitAll()
-                .antMatchers( "/pelicula/genero/**").permitAll();
+                .antMatchers("/pelicula/ver-todas/**").permitAll()
+                .antMatchers( "/pelicula/genero/**").permitAll()
+                .antMatchers("/iniciar").permitAll()
+                .antMatchers("/registrar").permitAll();
 
 
                 /*
@@ -58,7 +62,8 @@ public class WebAutorization extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .usernameParameter("username")
                 .passwordParameter("contrasenia")
-                .loginPage("/login")
+                .loginPage("/iniciar")
+                .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/", true);
 
         //Clearing cookies after logOut

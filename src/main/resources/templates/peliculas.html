@@ -69,6 +69,7 @@
 <table>
     <thead>
     <tr>
+        <th>Portada</th>
         <th scope="col">Titulo</th>
         <th scope="col">Director</th>
         <th scope="col">Duración</th>
@@ -82,6 +83,9 @@
 
     <tbody>
     <tr th:each="pelicula : ${peliculas}">
+        <td> <a style="text-decoration:none; padding: 10px 40px;">
+            <img th:src="${'/foto/peliculas/' +pelicula.id}" width="75">
+        </a></td>
         <td th:text="${pelicula.titulo}"></td>
         <td th:text="${pelicula.director}"></td>
         <td th:text="${pelicula.duracion}"></td>

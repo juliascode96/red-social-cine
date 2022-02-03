@@ -68,15 +68,22 @@
 <body>
 <div>
     <h2>Registrarse</h2>
-    <form th:action="@{/registrar/nuevo}" th:object="${usuario}" method="post">
-        <input hidden th:field="*{id}">
+    <form th:action="@{/registrar/nuevo}" method="post" enctype="multipart/form-data">
         <div class="user-box">
-            <input type="text" name = "username" th:field = "*{username}">
+            <input type="text" name = "username" th:value = "${username}">
             <label>Nombre de usuario</label>
         </div>
         <div class="user-box">
-            <input type="password" name = "contrasenia" th:field = "*{contrasenia}">
+            <input type="password" name = "contrasenia" th:value = "${contrasenia}">
             <label>Contraseña</label>
+        </div>
+        <div class="user-box">
+            <input type="password" name = "contrasenia2" th:value = "${contrasenia2}">
+            <label>Repetir contraseña</label>
+        </div>
+        <div class="user-box">
+            <input type="file" name = "archivo" th:value = "${archivo}">
+            <label>Foto de perfil</label>
         </div>
         <button type="submit" class="boton">Submit</button>
     </form>

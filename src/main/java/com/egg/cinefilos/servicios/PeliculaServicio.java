@@ -114,6 +114,10 @@ public class PeliculaServicio {
             if (pelicula.getFoto()==null) {
                 Foto foto = fotoServicio.guardar(archivo);
                 pelicula.setFoto(foto);
+            } else {
+                idFoto = pelicula.getFoto().getId();
+                Foto foto = fotoServicio.actualizar(idFoto, archivo);
+                pelicula.setFoto(foto);
             }
 
         if(pelicula.getSinopsis().length()>299) {

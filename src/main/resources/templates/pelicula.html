@@ -100,7 +100,9 @@
     <br>
 <div class="container">
 
-   <div th:switch="${favoritas.contains(pelicula)}">
+    <div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+   <div th:case="true">
+        <div th:switch="${favoritas.contains(pelicula)}">
        <div th:case="false">
            <form th:action="@{/pelicula/favorita/{idP} (idP = ${pelicula.id})}" method="post">
                <button type="submit" class="btn btn-outline-danger">Agregar a favoritas</button>
@@ -123,6 +125,8 @@
                 <button type="submit" class="btn btn-outline-danger">Quitar de películas por ver</button>
             </form>
         </div>
+    </div>
+   </div>
     </div>
 
 </div>

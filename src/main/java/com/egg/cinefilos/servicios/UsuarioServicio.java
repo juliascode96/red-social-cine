@@ -1,15 +1,14 @@
 package com.egg.cinefilos.servicios;
 
-import com.egg.cinefilos.entidades.Comentario;
-import com.egg.cinefilos.entidades.Pelicula;
-import com.egg.cinefilos.entidades.Role;
-import com.egg.cinefilos.entidades.Usuario;
+import com.egg.cinefilos.entidades.*;
 import com.egg.cinefilos.excepciones.ErrorServicio;
 import com.egg.cinefilos.repositorios.RepUsuario;
 import com.egg.cinefilos.repositorios.RepoComentario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.*;
 
 import javax.transaction.Transactional;
@@ -32,13 +31,20 @@ public class UsuarioServicio {
     @Autowired
     RepoComentario repoComentario;
 
-    public void validar(String username, String contrasenia) throws ErrorServicio {
+    @Autowired
+    FotoServicio fotoServicio;
+
+    public void validar(String username, String contrasenia, String contrasenia2) throws ErrorServicio {
         if(username.isEmpty()) {
             throw new ErrorServicio("El usuario no puede estar vacío");
         }
 
         if(contrasenia.isEmpty() || contrasenia.length() < 6) {
             throw new ErrorServicio("La contraseña es demasiado corta");
+        }
+
+        if(!contrasenia.equals(contrasenia2)) {
+            throw new ErrorServicio("Las contraseñas no coinciden");
         }
 
         List<Usuario> todosLosUsuarios = (ArrayList)repUsuario.findAll();
@@ -51,11 +57,15 @@ public class UsuarioServicio {
     }
 
     @Transactional
-    public Usuario guardarUsuario(Usuario usuario) throws ErrorServicio{
-        validar(usuario.getUsername(), usuario.getContrasenia());
-        usuario.setContrasenia(passwordEncoder.encode(usuario.getContrasenia()));
+    public Usuario guardarUsuario(String username, String contrasenia, String contrasenia2, MultipartFile archivo) throws ErrorServicio{
+        validar(username, contrasenia, contrasenia2);
+        Usuario usuario = new Usuario();
+        usuario.setUsername(username);
+        usuario.setContrasenia(passwordEncoder.encode(contrasenia));
         usuario.setRol(Role.USER);
         usuario.setPuntaje(0d);
+        Foto foto = fotoServicio.guardar(archivo);
+        usuario.setFoto(foto);
         return repUsuario.save(usuario);
     }
 
@@ -118,7 +128,12 @@ public class UsuarioServicio {
             Set<Usuario> seguidosDelUsuario = u.getSeguidos();
             seguidosDelUsuario.add(seguido);
 
-            u.setSeguidos(seguidosDelUsuario);
+            if(!u.getUsername().equals(seguido.getUsername())) {
+                u.setSeguidos(seguidosDelUsuario);
+            } else {
+                throw new ErrorServicio("No puedes seguirte a ti mismo");
+            }
+
             return repUsuario.save(u);
         } else {
             throw new ErrorServicio("Usuario no encontrado");
@@ -178,7 +193,12 @@ public class UsuarioServicio {
             ids.add(c.getId());
         }
 
-        return Collections.max(ids);
+        try {
+            return Collections.max(ids);
+        } catch (NoSuchElementException e) {
+            return null;
+        }
+
     }
 
     public List<Comentario> devolverUltimoComentarioSeguidos(Usuario usuario) {
@@ -187,9 +207,10 @@ public class UsuarioServicio {
         for (Usuario u:
              usuario.getSeguidos()) {
             Long idC = devolverUltimoComentario(u);
-            ultimosComentarios.add(repoComentario.findById(idC).get());
+            if(idC != null) {
+                ultimosComentarios.add(repoComentario.findById(idC).get());
+            }
         }
-
         return ultimosComentarios;
     }
 

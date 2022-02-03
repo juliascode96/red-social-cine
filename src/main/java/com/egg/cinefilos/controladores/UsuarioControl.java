@@ -1,20 +1,20 @@
 package com.egg.cinefilos.controladores;
 
+import com.egg.cinefilos.entidades.Foto;
 import com.egg.cinefilos.entidades.Pelicula;
 import com.egg.cinefilos.entidades.Usuario;
 import com.egg.cinefilos.excepciones.ErrorServicio;
 import com.egg.cinefilos.repositorios.RepUsuario;
 import com.egg.cinefilos.repositorios.RepoComentario;
+import com.egg.cinefilos.servicios.FotoServicio;
 import com.egg.cinefilos.servicios.PeliculaServicio;
 import com.egg.cinefilos.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class UsuarioControl {
@@ -30,6 +30,9 @@ public class UsuarioControl {
     @Autowired
     RepoComentario repoComentario;
 
+    @Autowired
+    FotoServicio fotoServicio;
+
     @GetMapping("/registrar")
     public String nuevoUsuario(Model model) {
         Usuario usuario = new Usuario();
@@ -38,10 +41,28 @@ public class UsuarioControl {
         return "nuevo_usuario";
     }
 
-    @PostMapping("/registrar/nuevo")
-    public String registroDeUsuario(@ModelAttribute("usuario") Usuario usuario) {
+
+    /*
+    @PostMapping("/creada")
+    public String crearPelicula(@ModelAttribute("pelicula") @RequestParam String titulo, @RequestParam String director,
+                                @RequestParam Integer duracion, @RequestParam String sinopsis, @RequestParam String genero, @RequestParam Integer anio, @RequestParam MultipartFile archivo) {
+        Pelicula pelicula = new Pelicula();
         try {
-            usuarioServicio.guardarUsuario(usuario);
+            Foto foto = fotosv.guardar(archivo);
+            pelicula.setFoto(foto);
+            peliculaServicio.CreacionPelicula(titulo, director, sinopsis, duracion, genero, anio, archivo);
+            return "redirect:/pelicula/todas";
+        }catch (ErrorServicio e) {
+            return "redirect:/error";
+        }
+    }
+     */
+
+
+    @PostMapping("/registrar/nuevo")
+    public String registroDeUsuario(@ModelAttribute("usuario") @RequestParam String username, @RequestParam String contrasenia, @RequestParam String contrasenia2, @RequestParam MultipartFile archivo) {
+        try {
+            usuarioServicio.guardarUsuario(username, contrasenia, contrasenia2, archivo);
             return "redirect:/";
         } catch (ErrorServicio e) {
             System.out.println(e);
