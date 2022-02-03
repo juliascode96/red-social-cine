@@ -104,7 +104,7 @@
    <div class="text-center mt-3 row justify-content-evenly">
        <h2>Mejor valoradas</h2>
        <div th:each="valoracion : ${mejorValoradas}" class="card col-md-4" style="width: 18rem;">
-           <img class="card-img-top" src="..." alt="Card image cap">
+           <img class="card-img-top" th:src="${'/foto/peliculas/' +valoracion.pelicula.id}" alt="Card image cap">
            <div class="card-body">
                <p class="card-text" th:text="${valoracion.promedio}"></p>
                <h5 class="card-title" th:text="${valoracion.pelicula.titulo}"></h5>
@@ -119,7 +119,7 @@
     <div class="text-center mt-3 row justify-content-evenly">
         <h2>Agregadas recientemente</h2>
         <div th:each="pelicula : ${peliculasNuevas}"  class="card col-md-4" style="width: 18rem;">
-            <img class="card-img-top" src="..." alt="Card image cap">
+            <img class="card-img-top" th:src="${'/foto/peliculas/' +pelicula.id}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title" th:text="${pelicula.titulo}"></h5>
                 <p class="card-text" th:text="${pelicula.extracto}"></p>

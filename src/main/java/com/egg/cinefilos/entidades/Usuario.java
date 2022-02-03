@@ -20,19 +20,26 @@ public class Usuario {
 
     private String username;
     private String contrasenia;
+
+    @Transient
+    private String contrasenia2;
+
     private Double puntaje;
 
     @Enumerated(EnumType.STRING)
     private Role rol;
 
-    @OneToMany
+    @ManyToMany
     private Set<Pelicula> peliculasFavoritas;
 
-    @OneToMany
+    @ManyToMany
     private Set<Pelicula> peliculasPorVer;
 
-    @OneToMany
+    @ManyToMany
     private Set<Usuario> seguidos;
+
+    @OneToOne
+    private Foto foto;
 
     public Usuario(String usarname, String contrasenia) {
         this.username = usarname;

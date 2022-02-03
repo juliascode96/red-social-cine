@@ -72,6 +72,7 @@
     <div class="container border">
     <div class="container">
 <div th:object="${pelicula}">
+    <img class="img-fluid" th:src="${'/foto/peliculas/' +pelicula.id}" alt="">
     <h2 th:text="*{titulo}"></h2>
     <p th:text="*{director}"></p>
     <p th:text="*{sinopsis}"></p>
@@ -98,13 +99,36 @@
     <br>
     <br>
 <div class="container">
-    <form th:action="@{/pelicula/favorita/{idP} (idP = ${pelicula.id})}" method="post">
-        <button type="submit" class="btn btn-outline-danger">Agregar a favoritas</button>
-    </form>
-    <br>
-    <form th:action="@{/pelicula/por_ver/{idP} (idP = ${pelicula.id})}" method="post">
-        <button type="submit" class="btn btn-outline-danger">Agregar a películas por ver</button>
-    </form>
+
+    <div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+   <div th:case="true">
+        <div th:switch="${favoritas.contains(pelicula)}">
+       <div th:case="false">
+           <form th:action="@{/pelicula/favorita/{idP} (idP = ${pelicula.id})}" method="post">
+               <button type="submit" class="btn btn-outline-danger">Agregar a favoritas</button>
+           </form>
+       </div>
+       <div th:case="true">
+           <form th:action="@{/pelicula/favorita/{idP}/eliminar (idP = ${pelicula.id})}" method="post">
+               <button type="submit" class="btn btn-outline-danger">Quitar de favoritas</button>
+           </form>
+       </div>
+   </div>
+    <div th:switch="${porVer.contains(pelicula)}">
+        <div th:case="false">
+            <form th:action="@{/pelicula/por_ver/{idP} (idP = ${pelicula.id})}" method="post">
+                <button type="submit" class="btn btn-outline-danger">Agregar a películas por ver</button>
+            </form>
+        </div>
+        <div th:case="true">
+            <form th:action="@{/pelicula/por_ver/{idP}/eliminar (idP = ${pelicula.id})}" method="post">
+                <button type="submit" class="btn btn-outline-danger">Quitar de películas por ver</button>
+            </form>
+        </div>
+    </div>
+   </div>
+    </div>
+
 </div>
     <br>
     <div class="container">

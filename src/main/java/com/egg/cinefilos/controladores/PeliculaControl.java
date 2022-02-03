@@ -2,18 +2,21 @@ package com.egg.cinefilos.controladores;
 
 import com.egg.cinefilos.entidades.*;
 import com.egg.cinefilos.excepciones.ErrorServicio;
+import com.egg.cinefilos.repositorios.RepUsuario;
 import com.egg.cinefilos.repositorios.RepoPelicula;
 import com.egg.cinefilos.repositorios.RepoValoracion;
 import com.egg.cinefilos.servicios.ComentarioServicio;
 import com.egg.cinefilos.servicios.FotoServicio;
 import com.egg.cinefilos.servicios.PeliculaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/pelicula")
@@ -34,6 +37,9 @@ public class PeliculaControl {
     @Autowired
     RepoValoracion repoValoracion;
 
+    @Autowired
+    RepUsuario repUsuario;
+
 
     @GetMapping("/nueva")
     public String nuevaPeliculaForm(Model model) {
@@ -43,11 +49,13 @@ public class PeliculaControl {
     }
 
     @PostMapping("/creada")
-    public String crearPelicula(@ModelAttribute("pelicula") Pelicula pelicula) {
+    public String crearPelicula(@ModelAttribute("pelicula") @RequestParam String titulo, @RequestParam String director,
+                                @RequestParam Integer duracion, @RequestParam String sinopsis, @RequestParam String genero, @RequestParam Integer anio, @RequestParam MultipartFile archivo) {
+        Pelicula pelicula = new Pelicula();
         try {
-            //Foto foto = fotosv.guardar(archivo);
-            //pelicula.setFoto(foto);
-            peliculaServicio.CreacionPelicula(pelicula);
+            Foto foto = fotosv.guardar(archivo);
+            pelicula.setFoto(foto);
+            peliculaServicio.CreacionPelicula(titulo, director, sinopsis, duracion, genero, anio, archivo);
             return "redirect:/pelicula/todas";
         }catch (ErrorServicio e) {
             return "redirect:/error";
@@ -68,13 +76,13 @@ public class PeliculaControl {
     }
 
     @PostMapping("/{id}")
-    public String editarPelicula(@PathVariable Long id, Model model, @ModelAttribute("pelicula") Pelicula p1) {
-            try {
-                peliculaServicio.modificarPelicula(p1.getId(), p1.getTitulo(), p1.getDirector(), p1.getActores(), p1.getDuracion(), p1.getGenero(), p1.getAnio()/*(MultipartFile) p1.getFoto()*/);
-                return "redirect:/pelicula/todas";
-            } catch (ErrorServicio e) {
-                return "redirect:/error";
-            }
+    public String editarPelicula(@PathVariable Long id, @ModelAttribute("pelicula") Pelicula p1, MultipartFile archivo) {
+        try {
+            peliculaServicio.modificarPelicula(p1.getId(), p1.getTitulo(), p1.getDirector(), p1.getSinopsis() ,p1.getDuracion(), p1.getGenero(), p1.getAnio(),archivo);
+            return "redirect:/pelicula/todas";
+        } catch (ErrorServicio e) {
+            return "redirect:/error";
+        }
     }
 
     @GetMapping("/borrar/{id}")
@@ -90,7 +98,18 @@ public class PeliculaControl {
     }
 
     @GetMapping("/detalles/{id}")
-    public String detallesPelicula(@PathVariable Long id, Model model) {
+    public String detallesPelicula(@PathVariable Long id, Model model, Authentication auth) {
+        if(auth==null) {
+            List<Pelicula> favoritas = new ArrayList<>();
+            List<Pelicula> porVer = new ArrayList<>();
+            model.addAttribute("favoritas", favoritas);
+            model.addAttribute("porVer", porVer);
+        } else {
+            Usuario usuario = repUsuario.findByUsername(auth.getName()).orElse(null);
+            model.addAttribute("favoritas", usuario.getPeliculasFavoritas());
+            model.addAttribute("porVer", usuario.getPeliculasPorVer());
+        }
+
         Pelicula p = peliculaServicio.buscarPorId(id).get();
         model.addAttribute("pelicula", p);
         ArrayList<Comentario> comentarios = (ArrayList<Comentario>) comenSV.buscarPorPelicula(id);

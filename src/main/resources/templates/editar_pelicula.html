@@ -68,7 +68,7 @@
 <body>
 <div>
     <h2>Editar pelicula</h2>
-    <form th:action="@{/pelicula/{id} (id = ${pelicula.id})}" th:object="${pelicula}" method="post">
+    <form th:action="@{/pelicula/{id} (id = ${pelicula.id})}" th:object="${pelicula}" method="post" enctype="multipart/form-data">
         <div class="user-box">
             <input type="text" name = "titulo" th:field = "*{titulo}">
             <label>Titulo</label>
@@ -92,6 +92,10 @@
         <div class="user-box">
             <input type="number" name = "anio" th:field = "*{anio}">
             <label>Año</label>
+        </div>
+        <div class="user-box">
+            <input type="file" name = "archivo" th:value = "${archivo}">
+            <label>Portada</label>
         </div>
         <button type="submit" class="boton">Submit</button>
     </form>

@@ -3,6 +3,7 @@ package com.egg.cinefilos.servicios;
 import com.egg.cinefilos.entidades.Comentario;
 import com.egg.cinefilos.entidades.Pelicula;
 import com.egg.cinefilos.entidades.Respuesta;
+import com.egg.cinefilos.entidades.Foto;
 import com.egg.cinefilos.entidades.Valoracion;
 import com.egg.cinefilos.excepciones.ErrorServicio;
 import com.egg.cinefilos.repositorios.RepoPelicula;
@@ -32,9 +33,11 @@ public class PeliculaServicio {
     @Autowired
     RespuestaServicio respuestaServicio;
 
-    public void validar(String titulo, String director,
-            Set<String> actores, Integer duracion, String genero,
-            Integer anio) throws ErrorServicio {
+    @Autowired
+    FotoServicio fotoServicio;
+
+    public void validar(String titulo, String director, Integer duracion, String genero,
+                        Integer anio) throws ErrorServicio {
 
         if (titulo == null || titulo.isEmpty()) {
             throw new ErrorServicio("El título de la película no puede ser nulo");
@@ -65,31 +68,63 @@ public class PeliculaServicio {
     }
 
     @Transactional
-    public void CreacionPelicula(Pelicula pelicula) throws ErrorServicio {
+    public void CreacionPelicula (String titulo, String director, String sinopsis, Integer duracion, String genero, Integer anio, MultipartFile archivo) throws ErrorServicio {
 
-        validar(pelicula.getTitulo(), pelicula.getDirector(), pelicula.getActores(), pelicula.getDuracion(), pelicula.getGenero(), pelicula.getAnio());
+        validar(titulo, director, duracion, genero, anio);
+        Pelicula pelicula = new Pelicula();
+        pelicula.setTitulo(titulo);
+        pelicula.setDirector(director);
+        pelicula.setDuracion(duracion);
+        pelicula.setSinopsis(sinopsis);
+        pelicula.setGenero(genero);
+        pelicula.setAnio(anio);
+
+        Foto foto = fotoServicio.guardar(archivo);
+        pelicula.setFoto(foto);
+        if(pelicula.getSinopsis().length()>299) {
+            pelicula.setExtracto(pelicula.getSinopsis().substring(0, 300).concat("..."));
+        } else {
+            pelicula.setExtracto(pelicula.getSinopsis());
+        }
+
+        repopeli.save(pelicula);
+
         Valoracion v = new Valoracion(0d,0d,0d,0d, pelicula);
         repoValoracion.save(v);
-        pelicula.setExtracto(pelicula.getSinopsis().substring(0, 300).concat("..."));
-        repopeli.save(pelicula);
     }
 
     @Transactional
-    public Pelicula modificarPelicula(Long id, String titulo, String director,
-                                      Set<String> actores, Integer duracion, String genero, Integer anio /*, MultipartFile archivo*/) throws ErrorServicio {
+    public Pelicula modificarPelicula(Long id, String titulo, String director, String sinopsis,
+                                      Integer duracion, String genero, Integer anio, MultipartFile archivo) throws ErrorServicio {
 
-        validar(titulo, director, actores, duracion, genero, anio);
+        validar(titulo, director, duracion, genero, anio);
 
         Optional<Pelicula> respuesta = repopeli.findById(id);
         if (respuesta.isPresent()) {
             Pelicula pelicula = respuesta.get();
-             pelicula.setTitulo(titulo);
-        pelicula.setDirector(director);
-        pelicula.setActores(actores);
-        pelicula.setDuracion(duracion);
-        pelicula.setGenero(genero);
-        pelicula.setAnio(anio);
-        pelicula.setExtracto(pelicula.getSinopsis().substring(0, 300).concat("..."));
+            pelicula.setTitulo(titulo);
+            pelicula.setDirector(director);
+            pelicula.setSinopsis(sinopsis);
+
+            pelicula.setDuracion(duracion);
+            pelicula.setGenero(genero);
+            pelicula.setAnio(anio);
+
+            String idFoto = null;
+            if (pelicula.getFoto()==null) {
+                Foto foto = fotoServicio.guardar(archivo);
+                pelicula.setFoto(foto);
+            } else {
+                idFoto = pelicula.getFoto().getId();
+                Foto foto = fotoServicio.actualizar(idFoto, archivo);
+                pelicula.setFoto(foto);
+            }
+
+        if(pelicula.getSinopsis().length()>299) {
+            pelicula.setExtracto(pelicula.getSinopsis().substring(0, 300).concat("..."));
+        } else {
+            pelicula.setExtracto(pelicula.getSinopsis());
+        }
             return repopeli.save(pelicula);
         } else {
             throw new ErrorServicio("No se pudo encontrar el id");
@@ -140,4 +175,6 @@ public class PeliculaServicio {
 
 
 }
+
+
 

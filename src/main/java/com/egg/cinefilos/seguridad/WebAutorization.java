@@ -38,9 +38,13 @@ public class WebAutorization extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/pelicula/borrar/**").hasAuthority("ADMIN")
                 .antMatchers(HttpMethod.POST, "/pelicula/detalles/**").authenticated()
                 .antMatchers("/usuario/**").authenticated()
+                .antMatchers("/personal").authenticated()
                 .antMatchers("/").permitAll()
                 .antMatchers( "/pelicula/detalles/**").permitAll()
-                .antMatchers( "/pelicula/genero/**").permitAll();
+                .antMatchers("/pelicula/ver-todas/**").permitAll()
+                .antMatchers( "/pelicula/genero/**").permitAll()
+                .antMatchers("/iniciar").permitAll()
+                .antMatchers("/registrar").permitAll();
 
 
                 /*
@@ -58,9 +62,9 @@ public class WebAutorization extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .usernameParameter("username")
                 .passwordParameter("contrasenia")
-                .loginPage("/login")
-                .defaultSuccessUrl("/index", true);
-
+                .loginPage("/iniciar")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/", true);
 
         //Clearing cookies after logOut
         http.logout().
@@ -83,17 +87,21 @@ public class WebAutorization extends WebSecurityConfigurerAdapter {
         http.exceptionHandling().
                 authenticationEntryPoint((req, res, exc) -> {
                     if (req.getRequestURI().contains("/web")) {
-                        res.sendRedirect("/web/index.html");
+                        res.sendRedirect("/index.html");
                     }
                 });
 
          */
 
-        http.formLogin().
+        /* http.formLogin().
                 successHandler((req, res, auth) -> clearAuthenticationAttributes(req));
+
+
 
         http.logout().
                 logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
+
+         */
     }
 
     @Bean
