@@ -76,13 +76,26 @@ public class PeliculaControl {
     }
 
     @PostMapping("/{id}")
-    public String editarPelicula(@PathVariable Long id, @ModelAttribute("pelicula") Pelicula p1, MultipartFile archivo) {
+    public String editarPelicula(@PathVariable Long id, @ModelAttribute("pelicula") Pelicula p1) {
         try {
-            peliculaServicio.modificarPelicula(p1.getId(), p1.getTitulo(), p1.getDirector(), p1.getSinopsis() ,p1.getDuracion(), p1.getGenero(), p1.getAnio(),archivo);
+            peliculaServicio.modificarPelicula(p1.getId(), p1.getTitulo(), p1.getDirector(), p1.getSinopsis() ,p1.getDuracion(), p1.getGenero(), p1.getAnio());
             return "redirect:/pelicula/todas";
         } catch (ErrorServicio e) {
             return "redirect:/error";
         }
+    }
+
+    @GetMapping ("/modificar/{id}")
+    public String modificarfotoForm (@PathVariable Long id, Model model) {
+        model.addAttribute("pelicula", peliculaServicio.buscarPorId(id).get());
+        return "modificarfoto";
+    }
+
+    @PostMapping("/modificarfoto/{id}")
+    public String editarFoto(@PathVariable Long id, Pelicula p1, MultipartFile archivo) {
+        p1 = peliculaServicio.buscarPorId(id).get();
+        peliculaServicio.modificarFoto(p1, archivo);
+        return "redirect:/pelicula/todas";
     }
 
     @GetMapping("/borrar/{id}")

@@ -2,7 +2,6 @@ package com.egg.cinefilos.servicios;
 
 import com.egg.cinefilos.entidades.Comentario;
 import com.egg.cinefilos.entidades.Pelicula;
-import com.egg.cinefilos.entidades.Respuesta;
 import com.egg.cinefilos.entidades.Foto;
 import com.egg.cinefilos.entidades.Valoracion;
 import com.egg.cinefilos.excepciones.ErrorServicio;
@@ -10,7 +9,6 @@ import com.egg.cinefilos.repositorios.RepoPelicula;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import javax.transaction.Transactional;
 
 import com.egg.cinefilos.repositorios.RepoValoracion;
@@ -95,7 +93,7 @@ public class PeliculaServicio {
 
     @Transactional
     public Pelicula modificarPelicula(Long id, String titulo, String director, String sinopsis,
-                                      Integer duracion, String genero, Integer anio, MultipartFile archivo) throws ErrorServicio {
+                                      Integer duracion, String genero, Integer anio) throws ErrorServicio {
 
         validar(titulo, director, duracion, genero, anio);
 
@@ -110,25 +108,27 @@ public class PeliculaServicio {
             pelicula.setGenero(genero);
             pelicula.setAnio(anio);
 
-            String idFoto = null;
-            if (pelicula.getFoto()==null) {
-                Foto foto = fotoServicio.guardar(archivo);
-                pelicula.setFoto(foto);
+            if(pelicula.getSinopsis().length()>299) {
+                pelicula.setExtracto(pelicula.getSinopsis().substring(0, 300).concat("..."));
             } else {
-                idFoto = pelicula.getFoto().getId();
-                Foto foto = fotoServicio.actualizar(idFoto, archivo);
-                pelicula.setFoto(foto);
+                pelicula.setExtracto(pelicula.getSinopsis());
             }
-
-        if(pelicula.getSinopsis().length()>299) {
-            pelicula.setExtracto(pelicula.getSinopsis().substring(0, 300).concat("..."));
-        } else {
-            pelicula.setExtracto(pelicula.getSinopsis());
-        }
             return repopeli.save(pelicula);
         } else {
             throw new ErrorServicio("No se pudo encontrar el id");
         }
+    }
+
+    @Transactional
+    public Pelicula modificarFoto (Pelicula pelicula, MultipartFile archivo) {
+        String idFoto = null;
+        if (pelicula.getFoto()!=null) {
+            idFoto = pelicula.getFoto().getId();
+        }
+        Foto foto = fotoServicio.actualizar(idFoto, archivo);
+        pelicula.setFoto(foto);
+
+        return repopeli.save(pelicula);
     }
 
     public Optional<Pelicula> buscarPorId(Long id) {

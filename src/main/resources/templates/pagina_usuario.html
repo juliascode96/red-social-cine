@@ -13,7 +13,7 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="javascript:void(0)"><img src="/logo.png" width="50"></a>
+            <a class="navbar-brand" th:href="@{/}"><img src="/logo.png" width="50"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -66,7 +66,16 @@
     </nav>
 </header>
 <body>
-<img th:src="${'/foto/usuario/' + usuarioAMostrar.username}" alt="" width="200">
+
+<div th:switch="${usuarioAMostrar.foto.mime == 'application/octet-stream'}">
+    <img th:case="true" th:src="${'https://avatars.dicebear.com/api/bottts/' + usuarioAMostrar.username + '.svg'}" alt="" width="150">
+    <img th:case="false" th:src="${'/foto/usuario/' + usuarioAMostrar.username}" alt="" width="150">
+</div>
+<div th:if="${#authentication.getName().equals(usuarioAMostrar.username)==true}">
+    <button><a th:href="@{/usuario/modificar/{username} (username = ${usuarioAMostrar.username})}">Modificar foto</a></button>
+</div>
+
+
 <h2 th:text="${usuarioAMostrar.username}"></h2>
 <p th:text="${usuarioAMostrar.getPuntaje()}"></p>
 
