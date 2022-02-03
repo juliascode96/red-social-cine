@@ -70,6 +70,18 @@ public class UsuarioServicio {
     }
 
     @Transactional
+    public Usuario modificarFoto (Usuario usuario, MultipartFile archivo) {
+        String idFoto = null;
+        if (usuario.getFoto()!=null) {
+            idFoto = usuario.getFoto().getId();
+        }
+        Foto foto = fotoServicio.actualizar(idFoto, archivo);
+        usuario.setFoto(foto);
+
+        return repUsuario.save(usuario);
+    }
+
+    @Transactional
     public Usuario agregarListaFavoritas(Usuario usuario, String titulo) throws ErrorServicio{
         Optional<Usuario> respuesta = repUsuario.findById(usuario.getId());
         if(respuesta.isPresent()) {

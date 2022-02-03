@@ -13,7 +13,7 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="javascript:void(0)"><img src="/logo.png" width="50"></a>
+            <a class="navbar-brand" th:href="@{/}"><img src="/logo.png" width="50"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -68,6 +68,7 @@
 <div>
     <h2>Nueva pelicula</h2>
     <form th:action="@{/pelicula/creada}"  method="post" enctype="multipart/form-data">
+        <p th:if="${error != null}" th:text="${error}" style="color:red;"></p>
         <div class="user-box">
             <input type="text" name = "titulo" th:value = "${titulo}">
             <label>Titulo</label>

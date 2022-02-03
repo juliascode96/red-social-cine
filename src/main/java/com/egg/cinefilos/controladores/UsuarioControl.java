@@ -78,6 +78,23 @@ public class UsuarioControl {
         return "iniciar_sesion";
     }
 
+    @GetMapping ("/usuario/modificar/{username}")
+    public String modificarfotoForm (@PathVariable String username, Model model, Authentication auth) {
+        if(auth.getName().equals(username)) {
+            model.addAttribute("usuario", repUsuario.findByUsername(username).get());
+            return "modificarfoto_usuario";
+        } else {
+            return "sin_permiso";
+        }
+    }
+
+    @PostMapping("/usuario/modificarfoto/{username}")
+    public String editarFoto(@PathVariable String username, MultipartFile archivo) {
+        Usuario usuario = repUsuario.findByUsername(username).get();
+        usuarioServicio.modificarFoto(usuario, archivo);
+        return "redirect:/usuario/{username}";
+    }
+
     @GetMapping("/usuario/{username}")
     public String paginaUsuario(@PathVariable String username, Model model, Authentication auth) {
         Usuario usuario = repUsuario.findByUsername(auth.getName()).get();
