@@ -37,7 +37,7 @@ public class PeliculaServicio {
     @Autowired
     FotoServicio fotoServicio;
 
-    public void validar(String titulo, String director, Integer duracion, String genero,
+    public void validar(String titulo, String director, String actores, Integer duracion, String genero,
                         Integer anio) throws ErrorServicio {
 
         if (titulo == null || titulo.isEmpty()) {
@@ -48,12 +48,11 @@ public class PeliculaServicio {
             throw new ErrorServicio("El director de la película no puede ser nulo");
         }
 
-       /*
+
         if (actores == null || actores.isEmpty()) {
             throw new ErrorServicio("Complete con los actores de la película");
         }
 
-        */
 
         if (duracion == null || duracion<0 ) {
             throw new ErrorServicio("La duración de la película no puede ser nula o ser menor a 0");
@@ -69,11 +68,12 @@ public class PeliculaServicio {
     }
 
     @Transactional
-    public void CreacionPelicula (String titulo, String director, String sinopsis, Integer duracion, String genero, Integer anio, MultipartFile archivo) throws ErrorServicio {
+    public void CreacionPelicula (String titulo, String director, String actores, String sinopsis, Integer duracion, String genero, Integer anio, MultipartFile archivo) throws ErrorServicio {
             Pelicula pelicula = new Pelicula();
-            validar(titulo, director, duracion, genero, anio);
+            validar(titulo, director, actores, duracion, genero, anio);
             pelicula.setTitulo(titulo);
             pelicula.setDirector(director);
+            pelicula.setActores(actores);
             pelicula.setDuracion(duracion);
             pelicula.setSinopsis(sinopsis);
             pelicula.setGenero(genero);
@@ -94,10 +94,10 @@ public class PeliculaServicio {
     }
 
     @Transactional
-    public Pelicula modificarPelicula(Long id, String titulo, String director, String sinopsis,
+    public Pelicula modificarPelicula(Long id, String titulo, String director, String actores, String sinopsis,
                                       Integer duracion, String genero, Integer anio) throws ErrorServicio {
 
-        validar(titulo, director, duracion, genero, anio);
+        validar(titulo, director, actores, duracion, genero, anio);
 
         Optional<Pelicula> respuesta = repopeli.findById(id);
         if (respuesta.isPresent()) {
@@ -105,7 +105,7 @@ public class PeliculaServicio {
             pelicula.setTitulo(titulo);
             pelicula.setDirector(director);
             pelicula.setSinopsis(sinopsis);
-
+            pelicula.setActores(actores);
             pelicula.setDuracion(duracion);
             pelicula.setGenero(genero);
             pelicula.setAnio(anio);
@@ -163,14 +163,6 @@ public class PeliculaServicio {
         return repopeli.findByTitulo(titulo);
     }
 
-    public List<Pelicula> buscarPorPalabraClave(String palabra) {
-        return repopeli.findByTituloContaining(palabra);
-    }
-
-    public List<Pelicula> buscarPorDirector(String director) {
-        return repopeli.findByDirectorContaining(director);
-    }
-
     public List<Pelicula> buscarPorGenero(String genero) {
         return repopeli.findByGeneroContaining(genero);
     }
@@ -178,6 +170,7 @@ public class PeliculaServicio {
     public Set<Pelicula> buscar(String palabra) {
         List<Pelicula> resultados = repopeli.findByTituloContaining(palabra);
         resultados.addAll(repopeli.findByDirectorContaining(palabra));
+        resultados.addAll(repopeli.findByActoresContaining(palabra));
         Set <Pelicula> res = resultados.stream().collect(Collectors.toSet());
         return res;
     }
