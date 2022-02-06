@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -50,7 +51,7 @@ public class PeliculaControl {
 
     @PostMapping("/creada")
     public String crearPelicula(@ModelAttribute("pelicula") @RequestParam String titulo, @RequestParam String director,
-                                @RequestParam Integer duracion, @RequestParam String sinopsis, @RequestParam String genero, @RequestParam Integer anio, @RequestParam MultipartFile archivo) {
+                                @RequestParam Integer duracion, @RequestParam String sinopsis, @RequestParam String genero, @RequestParam Integer anio, @RequestParam MultipartFile archivo, ModelMap model) throws ErrorServicio{
         Pelicula pelicula = new Pelicula();
         try {
             Foto foto = fotosv.guardar(archivo);
@@ -58,7 +59,14 @@ public class PeliculaControl {
             peliculaServicio.CreacionPelicula(titulo, director, sinopsis, duracion, genero, anio, archivo);
             return "redirect:/pelicula/todas";
         }catch (ErrorServicio e) {
-            return "redirect:/error";
+            model.put("error", e.getMessage());
+            model.put("titulo", titulo);
+            model.put("director", director);
+            model.put("sinopsis", sinopsis);
+            model.put("duracion", duracion);
+            model.put("genero", genero);
+            model.put("anio", anio);
+            return "error";
         }
     }
 

@@ -8,6 +8,8 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/estilos.css">
+
 </head>
 <body>
 <header>
@@ -69,37 +71,7 @@
 
     <div class="text-center"><img src="/h1.png" width="300"></div>
 
-    <div id="demo" class="carousel slide text-center" data-ride="carousel">
-
-        <!-- Indicators -->
-        <ul class="carousel-indicators">
-            <li data-target="#demo" data-slide-to="0" class="active"></li>
-            <li data-target="#demo" data-slide-to="1"></li>
-            <li data-target="#demo" data-slide-to="2"></li>
-        </ul>
-
-        <!-- The slideshow -->
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="https://www.joblo.com/wp-content/uploads/2010/06/inception-uk-banner1-1.jpg" height="400" width="100%" alt="Los Angeles">
-            </div>
-            <div class="carousel-item">
-                <img src="http://images6.fanpop.com/image/photos/40000000/London-Has-Fallen-Movie-Desktop-Wallpaper-movie-trailers-40045635-2560-1600.jpg" height="400" width="100%" alt="Chicago">
-            </div>
-            <div class="carousel-item">
-                <img src="https://cdn.shopify.com/s/files/1/0969/9128/products/1917_-_Sam_Mendes_WW1_Epic_-_Hollywood_War_Film_Classic_English_Movie_Poster_81a3cd10-0023-439a-b461-c67381a81ecb.jpg?v=1582781193" height="400" width="100%" alt="New York">
-            </div>
-        </div>
-
-        <!-- Left and right controls -->
-        <a class="carousel-control-prev" href="#demo" data-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </a>
-        <a class="carousel-control-next" href="#demo" data-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </a>
-
-    </div>
+    <img src="/separador-inicial.png" alt="" class="img-fluid">
 
    <div class="text-center mt-3 row justify-content-evenly">
        <h2>Mejor valoradas</h2>
@@ -114,7 +86,7 @@
        </div>
    </div>
     <br>
-    <br>
+    <img src="/separador-medio.png" alt="" class="img-fluid">
     <br>
     <div class="text-center mt-3 row justify-content-evenly">
         <h2>Agregadas recientemente</h2>
@@ -127,23 +99,74 @@
             </div>
         </div>
     </div>
+    <br>
+    <img src="/separador-medio.png" alt="" class="img-fluid">
+    <br>
+    <div class="cosas-usuarios">
+        <div>
+        <h2>Top usuarios</h2>
+        <div class="tabla-usuarios d-flex justify-content-center">
+            <table class="table table-hover w-auto">
 
+                <tbody>
+                <tr th:each="usuario : ${topUsuarios}">
+                    <td> <div th:switch="${usuario.foto.mime == 'application/octet-stream'}">
+                        <img th:case="true" th:src="${'https://avatars.dicebear.com/api/bottts/' + usuario.username + '.svg'}" alt="" width="50">
+                        <img th:case="false" th:src="${'/foto/usuario/' + usuario.username}" alt="" width="50">
+                    </div></td>
+                    <td th:text="${usuario.username}"></td>
+                    <td th:text="${usuario.puntaje}"></td>
+                    <td><button class="btn btn-outline-danger"><a class="text-decoration-none link-danger" th:href="@{/usuario/{username} (username = ${usuario.username})}">Ver perfil</a></button></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
     <div class="text-center mt-3 row justify-content-evenly">
         <h2>Top de reseñas</h2>
         <div th:each="resenia : ${topResenias}"  class="card col-md-4" style="width: 18rem;">
-            <img class="card-img-top" src="..." alt="Card image cap">
+            <div th:switch="${resenia.comentario.usuario.foto.mime == 'application/octet-stream'}">
+                <img th:case="true" th:src="${'https://avatars.dicebear.com/api/bottts/' + resenia.comentario.usuario.username + '.svg'}" alt="" height="100">
+                <img th:case="false" th:src="${'/foto/usuario/' + resenia.comentario.usuario.username}" alt="" height="100">
+            </div>
             <div class="card-body">
-                <h5 class="card-title" th:text="${resenia.comentario.pelicula.titulo}"></h5>
-                <a th:href="@{/usuario/{username} (username = ${resenia.comentario.usuario.username})}" th:text="${resenia.comentario.usuario.username}"></a>
+                <h5 class="card-title"><a class="text-decoration-none link-danger" th:text="${resenia.comentario.pelicula.titulo}"></a></h5>
+                <h5 class="card-title" th:text="${resenia.promedio}"></h5>
+                <a class="text-decoration-none link-dark" th:href="@{/usuario/{username} (username = ${resenia.comentario.usuario.username})}" th:text="${resenia.comentario.usuario.username}"></a>
                 <br><a th:href="@{/pelicula/detalles/{id}/comentario/{idC} (id = ${resenia.comentario.pelicula.id}, idC = ${resenia.comentario.id})}" class="btn btn-danger">Ver reseña</a>
             </div>
         </div>
     </div>
-    <h2>Top usuarios</h2>
-    <ul th:each="usuario : ${topUsuarios}">
-        <li><a th:text="${usuario.username}" th:href="@{/usuario/{username} (username = ${usuario.username})}"></a></li>
-    </ul>
-
+    </div>
+    <img src="/separador-final.png" alt="" class="img-fluid">
 </main>
+<!-- Footer -->
+<footer class="page-footer font-small color-dark pt-4">
+
+    <!-- Footer Elements -->
+    <div class="container">
+
+        <!-- Call to action -->
+        <ul class="list-unstyled list-inline text-center py-2">
+            <li class="list-inline-item">
+                <h5 class="mb-1 text-secondary">Forma parte de la comunidad: </h5>
+            </li>
+            <li class="list-inline-item">
+               <button class="btn btn-outline-danger"> <a class="text-decoration-none text-danger" th:href="@{/registrar}">Registrarse!</a></button>
+            </li>
+        </ul>
+        <!-- Call to action -->
+
+    </div>
+    <!-- Footer Elements -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3 text-secondary">© Hecho por:
+        <a href="https://github.com/juliascode96/red-social-cine" class="text-decoration-none link-secondary">equipo1@EggCoop</a>
+    </div>
+    <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
 </body>
 </html>

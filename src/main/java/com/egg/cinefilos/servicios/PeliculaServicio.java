@@ -67,28 +67,27 @@ public class PeliculaServicio {
 
     @Transactional
     public void CreacionPelicula (String titulo, String director, String sinopsis, Integer duracion, String genero, Integer anio, MultipartFile archivo) throws ErrorServicio {
+            Pelicula pelicula = new Pelicula();
+            validar(titulo, director, duracion, genero, anio);
+            pelicula.setTitulo(titulo);
+            pelicula.setDirector(director);
+            pelicula.setDuracion(duracion);
+            pelicula.setSinopsis(sinopsis);
+            pelicula.setGenero(genero);
+            pelicula.setAnio(anio);
 
-        validar(titulo, director, duracion, genero, anio);
-        Pelicula pelicula = new Pelicula();
-        pelicula.setTitulo(titulo);
-        pelicula.setDirector(director);
-        pelicula.setDuracion(duracion);
-        pelicula.setSinopsis(sinopsis);
-        pelicula.setGenero(genero);
-        pelicula.setAnio(anio);
+            Foto foto = fotoServicio.guardar(archivo);
+            pelicula.setFoto(foto);
+            if(pelicula.getSinopsis().length()>299) {
+                pelicula.setExtracto(pelicula.getSinopsis().substring(0, 300).concat("..."));
+            } else {
+                pelicula.setExtracto(pelicula.getSinopsis());
+            }
 
-        Foto foto = fotoServicio.guardar(archivo);
-        pelicula.setFoto(foto);
-        if(pelicula.getSinopsis().length()>299) {
-            pelicula.setExtracto(pelicula.getSinopsis().substring(0, 300).concat("..."));
-        } else {
-            pelicula.setExtracto(pelicula.getSinopsis());
-        }
+            repopeli.save(pelicula);
 
-        repopeli.save(pelicula);
-
-        Valoracion v = new Valoracion(0d,0d,0d,0d, pelicula);
-        repoValoracion.save(v);
+            Valoracion v = new Valoracion(0d,0d,0d,0d, pelicula);
+            repoValoracion.save(v);
     }
 
     @Transactional

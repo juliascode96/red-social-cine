@@ -1,3 +1,6 @@
+* {
+
+}
 main {
     margin-left: 10px;
 }
@@ -8,4 +11,16 @@ main {
 
 td {
     align-items: center;
+}
+
+.tabla-usuarios a:hover {
+    color: white;
+}
+
+.cosas-usuarios {
+    display : flex;
+}
+
+footer {
+    background: black;
 }

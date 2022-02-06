@@ -33,7 +33,7 @@ public class MainControl {
     public String inicio(Model model) {
         model.addAttribute("peliculasNuevas", repoPelicula.findTop4ByOrderByIdDesc());
         model.addAttribute("mejorValoradas", repoValoracion.findTop4ByOrderByPromedioDesc());
-        model.addAttribute("topResenias", repoValoracionComentario.findTop10ByOrderByPromedioDesc());
+        model.addAttribute("topResenias", repoValoracionComentario.findTop9ByOrderByPromedioDesc());
         model.addAttribute("topUsuarios", repUsuario.findTop10ByOrderByPuntajeDesc());
         return "index";
     }
