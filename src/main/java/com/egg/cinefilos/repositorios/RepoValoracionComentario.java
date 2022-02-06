@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface RepoValoracionComentario extends CrudRepository<ValoracionComentario, Long> {
     ValoracionComentario findByComentarioId(Long id);
-    List<ValoracionComentario> findTop10ByOrderByPromedioDesc();
+    List<ValoracionComentario> findTop9ByOrderByPromedioDesc();
 }
