@@ -7,8 +7,11 @@ import com.egg.cinefilos.entidades.Valoracion;
 import com.egg.cinefilos.excepciones.ErrorServicio;
 import com.egg.cinefilos.repositorios.RepoPelicula;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import com.egg.cinefilos.repositorios.RepoValoracion;
@@ -170,6 +173,13 @@ public class PeliculaServicio {
 
     public List<Pelicula> buscarPorGenero(String genero) {
         return repopeli.findByGeneroContaining(genero);
+    }
+
+    public Set<Pelicula> buscar(String palabra) {
+        List<Pelicula> resultados = repopeli.findByTituloContaining(palabra);
+        resultados.addAll(repopeli.findByDirectorContaining(palabra));
+        Set <Pelicula> res = resultados.stream().collect(Collectors.toSet());
+        return res;
     }
 
 

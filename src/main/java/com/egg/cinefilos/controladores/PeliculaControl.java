@@ -162,4 +162,14 @@ public class PeliculaControl {
         return "lista_peliculas";
     }
 
+    @GetMapping("/busqueda")
+    public String buscar(String palabra, Model model) {
+        if(palabra.isEmpty() || palabra == null) {
+            model.addAttribute("peliculas", peliculaServicio.mostrarTodas());
+        } else {
+            model.addAttribute("peliculas", peliculaServicio.buscar(palabra));
+        }
+        return "busqueda";
+    }
+
 }

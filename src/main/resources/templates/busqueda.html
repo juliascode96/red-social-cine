@@ -73,16 +73,24 @@
         </div>
     </nav>
 </header>
-<body>
-
-<form th:action="@{/usuario/modificarfoto/{username} (username=${usuario.username}) }"  method="post" enctype="multipart/form-data">
-    <div class="user-box">
-        <input type="file" name = "archivo" th:value = "${archivo}">
-        <label>Nueva imagen</label>
+<main>
+    <div th:each="pelicula : ${peliculas}">
+        <div class="card border-danger mb-3" style="max-width: 540px;">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img th:src="${'/foto/peliculas/' +pelicula.id}" class="card-img" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${pelicula.titulo}"></h5>
+                        <p class="card-text" th:text="${pelicula.extracto}"></p>
+                        <button type="button" class="btn btn-danger"><a class="text-decoration-none link-light" th:href="@{/pelicula/detalles/{id}(id=${pelicula.id})}">Ver más</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <button type="submit" class="boton">Submit</button>
-</form>
+</main>
 <!-- Footer -->
 <footer class="page-footer font-small color-dark pt-4">
 
