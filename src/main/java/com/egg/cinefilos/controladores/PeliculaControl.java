@@ -50,13 +50,13 @@ public class PeliculaControl {
     }
 
     @PostMapping("/creada")
-    public String crearPelicula(@ModelAttribute("pelicula") @RequestParam String titulo, @RequestParam String director,
+    public String crearPelicula(@ModelAttribute("pelicula") @RequestParam String titulo, @RequestParam String director, @RequestParam String actores,
                                 @RequestParam Integer duracion, @RequestParam String sinopsis, @RequestParam String genero, @RequestParam Integer anio, @RequestParam MultipartFile archivo, ModelMap model) throws ErrorServicio{
         Pelicula pelicula = new Pelicula();
         try {
             Foto foto = fotosv.guardar(archivo);
             pelicula.setFoto(foto);
-            peliculaServicio.CreacionPelicula(titulo, director, sinopsis, duracion, genero, anio, archivo);
+            peliculaServicio.CreacionPelicula(titulo, director, actores, sinopsis, duracion, genero, anio, archivo);
             return "redirect:/pelicula/todas";
         }catch (ErrorServicio e) {
             model.put("error", e.getMessage());
@@ -86,7 +86,7 @@ public class PeliculaControl {
     @PostMapping("/{id}")
     public String editarPelicula(@PathVariable Long id, @ModelAttribute("pelicula") Pelicula p1) {
         try {
-            peliculaServicio.modificarPelicula(p1.getId(), p1.getTitulo(), p1.getDirector(), p1.getSinopsis() ,p1.getDuracion(), p1.getGenero(), p1.getAnio());
+            peliculaServicio.modificarPelicula(p1.getId(), p1.getTitulo(), p1.getDirector(), p1.getActores(), p1.getSinopsis() ,p1.getDuracion(), p1.getGenero(), p1.getAnio());
             return "redirect:/pelicula/todas";
         } catch (ErrorServicio e) {
             return "redirect:/error";
