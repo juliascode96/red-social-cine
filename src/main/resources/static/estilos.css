@@ -24,3 +24,12 @@ td {
 footer {
     background: black;
 }
+
+.objeto {
+    margin: 5px;
+}
+
+.hola {
+    display: flex;
+}
+

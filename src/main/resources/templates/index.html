@@ -134,6 +134,7 @@
             <div th:switch="${resenia.comentario.usuario.foto.mime == 'application/octet-stream'}">
                 <img th:case="true" th:src="${'https://avatars.dicebear.com/api/bottts/' + resenia.comentario.usuario.username + '.svg'}" alt="" height="100">
                 <img th:case="false" th:src="${'/foto/usuario/' + resenia.comentario.usuario.username}" alt="" height="100">
+                <img th:case="*" th:src="${'https://avatars.dicebear.com/api/bottts/' + resenia.comentario.usuario.username + '.svg'}" alt="">
             </div>
             <div class="card-body">
                 <h5 class="card-title"><a class="text-decoration-none link-danger" th:text="${resenia.comentario.pelicula.titulo}"></a></h5>

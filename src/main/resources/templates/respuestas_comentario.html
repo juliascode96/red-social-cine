@@ -73,25 +73,89 @@
         </div>
     </nav>
 </header>
-<div th:object="${comentario}">
-    <p th:text="*{usuario.username}"></p>
-    <p th:text="*{texto}"></p>
-</div>
-<h2>Respuestas</h2>
-<div th:each="r : ${respuestas}">
-    <div>
-        <p th:text="${r.usuario.username}"></p>
-        <p th:text="${r.texto}"></p>
+<section class="gradient-custom">
+    <div class="container my-5 py-5">
+        <h4 class="text-center mb-4 pb-2" th:text="${comentario.pelicula.titulo}"></h4>
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-lg-10 col-xl-8">
+                    <div class="card border border-danger">
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="d-flex flex-start">
+
+                                        <div th:switch="${comentario.usuario.foto.mime == 'application/octet-stream'}">
+                                            <img th:case="true" th:src="${'https://avatars.dicebear.com/api/bottts/' + comentario.usuario.username + '.svg'}" class="rounded-circle shadow-1-strong me-3"
+                                                 alt="avatar"
+                                                 width="65"
+                                                 height="65">
+                                            <img th:case="false" th:src="${'/foto/usuario/' + comentario.usuario.username}" class="rounded-circle shadow-1-strong me-3"
+                                                 alt="avatar"
+                                                 width="65"
+                                                 height="65">
+                                            <img th:case="*" th:src="${'https://avatars.dicebear.com/api/bottts/' + comentario.usuario.username + '.svg'}" class="rounded-circle shadow-1-strong me-3"
+                                                 alt="avatar"
+                                                 width="65"
+                                                 height="65">
+                                        </div>
+                                        <div class="flex-grow-1 flex-shrink-1">
+                                            <div>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <p class="mb-1" th:text="${comentario.usuario.username}">
+                                                        <span class="small" th:text="${comentario.valoracion.promedio}"></span>
+                                                    </p>
+                                                </div>
+                                                <p class="small mb-0" th:text="${comentario.texto}">
+                                                </p>
+                                            </div>
+                                            <div class="d-flex flex-start mt-4" th:each="r : ${respuestas}">
+                                                <a class="me-3" href="#">
+                                                    <div th:switch="${r.usuario.foto.mime == 'application/octet-stream'}">
+                                                        <img th:case="true" th:src="${'https://avatars.dicebear.com/api/bottts/' + r.usuario.username + '.svg'}" class="rounded-circle shadow-1-strong me-3"
+                                                             alt="avatar"
+                                                             width="65"
+                                                             height="65">
+                                                        <img th:case="false" th:src="${'/foto/usuario/' + r.usuario.username}" class="rounded-circle shadow-1-strong me-3"
+                                                             alt="avatar"
+                                                             width="65"
+                                                             height="65">
+                                                        <img th:case="*" th:src="${'https://avatars.dicebear.com/api/bottts/' + r.usuario.username + '.svg'}" class="rounded-circle shadow-1-strong me-3"
+                                                             alt="avatar"
+                                                             width="65"
+                                                             height="65">
+                                                    </div>
+                                                </a>
+                                                <div class="flex-grow-1 flex-shrink-1">
+                                                    <div>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <p class="mb-1" th:text="${r.usuario.username}">
+                                                            </p>
+                                                        </div>
+                                                        <p class="small mb-0" th:text="${r.texto}">
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <form th:action="@{/pelicula/detalles/{idP}/comentario/{idC}/nueva_respuesta (idP = ${pelicula.id}, idC=${comentario.id})}" th:object="${nuevaRespuesta}" method="post">
+                                <input hidden th:field="*{id}">
+                                    <input type="text" name = "texto" th:field = "*{texto}" class="form-control">
+                                <div class="float-right"><button type="submit" class="btn btn-danger float-end">Responder</button></div>
+                            </form>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-<h2>Responder</h2>
-<form th:action="@{/pelicula/detalles/{idP}/comentario/{idC}/nueva_respuesta (idP = ${pelicula.id}, idC=${comentario.id})}" th:object="${nuevaRespuesta}" method="post">
-    <input hidden th:field="*{id}">
-    <div class="user-box">
-        <input type="text" name = "texto" th:field = "*{texto}">
-    </div>
-    <button type="submit" class="boton">Submit</button>
-</form>
+</section>
+
+
 <!-- Footer -->
 <footer class="page-footer font-small color-dark pt-4">
 

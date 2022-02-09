@@ -74,41 +74,42 @@
     </nav>
 </header>
 <div>
-    <h2>Nueva pelicula</h2>
+    <h3><strong>Nueva pelicula</strong></h3>
     <form th:action="@{/pelicula/creada}"  method="post" enctype="multipart/form-data">
-        <div class="user-box">
-            <input type="text" name = "titulo" th:value = "${titulo}">
+        <div class="form-group">
             <label>Titulo</label>
-        </div>
-        <div class="user-box">
-            <input type="text" name = "director" th:value = "${director}">
+            <input type="text" class="form-control" name = "titulo" th:value = "${titulo}">
+           </div>
+        <div class="form-group">
             <label>Director</label>
+            <input type="text" class="form-control" name = "director" th:value = "${director}">
         </div>
-        <div class="user-box">
-            <input type="text" name = "actores" th:field = "${actores}">
-            <label>Reparto</label>
-        </div>
-        <div class="user-box">
-            <input type="text" name = "sinopsis" th:value = "${sinopsis}">
-            <label>Sinopsis</label>
-        </div>
-        <div class="user-box">
-            <input type="number" name = "duracion" th:value = "${duracion}">
+        <div class="form-group">
+                  <label>Reparto</label>
+            <input type="text" class="form-control" name = "actores" th:value = "${actores}">
+              </div>
+        <div class="form-group">
+                  <label>Sinopsis</label>
+            <input type="text" class="form-control" name = "sinopsis" th:value = "${sinopsis}">
+              </div>
+        <div class="form-group">
             <label>Duracion</label>
-        </div>
-        <div class="user-box">
-            <input type="text" name = "genero" th:value = "${genero}">
-            <label>Genero</label>
-        </div>
-        <div class="user-box">
-            <input type="number" name = "anio" th:value = "${anio}">
-            <label>Año</label>
-        </div>
-        <div class="user-box">
-            <input type="file" name = "archivo" th:value = "${archivo}">
+            <input type="number" class="form-control" name = "duracion" th:value = "${duracion}">
+                   </div>
+        <div class="form-group">
+              <label>Genero</label>
+              <input type="text" class="form-control" name = "genero" th:value = "${genero}">
+                  </div>
+        <div class="form-group">
+               <label>Año</label>
+               <input type="number" class="form-control" name = "anio" th:value = "${anio}">
+                 </div>
+        <div class="form-group">
             <label>Portada</label>
-        </div>
-        <button type="submit" class="boton">Submit</button>
+            <input type="file" class="form-control" name = "archivo" th:value = "${archivo}">
+                   </div>
+        <br>
+        <button type="submit" class="btn btn-danger">Crear</button>
     </form>
 </div>
 <!-- Footer -->

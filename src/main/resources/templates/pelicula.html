@@ -27,16 +27,23 @@
             </button>
             <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item" th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+                    <li class="nav-item"
+                        th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
                         <a class="nav-link" th:case="${false}" th:href="@{/iniciar}">Iniciar sesión</a>
                     </li>
-                    <li class="nav-item dropdown" th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')}">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" th:text="${#authentication.getName}"></a>
+                    <li class="nav-item dropdown"
+                        th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')}">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           th:text="${#authentication.getName}"></a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item link-danger" th:href="@{/personal}">Mi feed</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/usuario/{username} (username = ${#authentication.getName})}">Mi perfil</a></li>
-                            <li class="nav-item" th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
-                                <a class="dropdown-item link-danger" th:case="${true}" th:href="@{/logout}">Cerrar sesión</a>
+                            <li><a class="dropdown-item link-danger"
+                                   th:href="@{/usuario/{username} (username = ${#authentication.getName})}">Mi
+                                perfil</a></li>
+                            <li class="nav-item"
+                                th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+                                <a class="dropdown-item link-danger" th:case="${true}" th:href="@{/logout}">Cerrar
+                                    sesión</a>
                             </li>
                         </ul>
                     </li>
@@ -52,154 +59,207 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Géneros</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = acción)}">Acción</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = aventura)}">Aventura</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = cienciaficción)}">Ciencia ficción</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = comedia)}">Comedia</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = documental)}">Documental</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = drama)}">Drama</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = fantasía)}">Fantasía</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = musical)}">Musical</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = suspenso)}">Suspenso</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = terror)}">Terror</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = acción)}">Acción</a>
+                            </li>
+                            <li><a class="dropdown-item link-danger"
+                                   th:href="@{/pelicula/{genero} (genero = aventura)}">Aventura</a></li>
+                            <li><a class="dropdown-item link-danger"
+                                   th:href="@{/pelicula/{genero} (genero = cienciaficción)}">Ciencia ficción</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = comedia)}">Comedia</a>
+                            </li>
+                            <li><a class="dropdown-item link-danger"
+                                   th:href="@{/pelicula/{genero} (genero = documental)}">Documental</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = drama)}">Drama</a>
+                            </li>
+                            <li><a class="dropdown-item link-danger"
+                                   th:href="@{/pelicula/{genero} (genero = fantasía)}">Fantasía</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = musical)}">Musical</a>
+                            </li>
+                            <li><a class="dropdown-item link-danger"
+                                   th:href="@{/pelicula/{genero} (genero = suspenso)}">Suspenso</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = terror)}">Terror</a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
                 <form class="d-flex" th:action="@{/pelicula/busqueda}" method="get">
-                    <input class="form-control me-2" type="text" placeholder="Buscar" name="palabra" th:value="${palabra}">
+                    <input class="form-control me-2" type="text" placeholder="Buscar" name="palabra"
+                           th:value="${palabra}">
                     <button class="btn btn-outline-danger" type="submit">Buscar</button>
                 </form>
             </div>
         </div>
     </nav>
 </header>
-<body>
+
 <div class="container">
 
 
-    <div class="container border">
-    <div class="container">
-<div th:object="${pelicula}">
-    <img class="img-fluid" th:src="${'/foto/peliculas/' +pelicula.id}" alt="">
-    <h2 th:text="*{titulo}"></h2>
-    <p th:text="*{director}"></p>
-    <span>Reparto: <p th:text="*{actores}"></p></span>
-    <p th:text="*{sinopsis}"></p>
-</div>
-
-<div th:object="${valoracion}">
-    <p th:text="*{promedio}"></p>
-</div>
-    </div>
-<div class="container">
-    <form th:action="@{/pelicula/detalles/{idP}/valorar (idP=${pelicula.id})}" th:object="${valoracion}" method="post">
-        <select th:field="*{ultima}">
-            <option th:value="1" th:text="1"></option>
-            <option th:value="2" th:text="2"></option>
-            <option th:value="3" th:text="3"></option>
-            <option th:value="4" th:text="4"></option>
-            <option th:value="5" th:text="5"></option>
-        </select>
-        <button type="submit" class="btn btn-danger">Calificar película</button>
-    </form>
-</div>
-    </div>
-
-    <br>
-    <br>
-<div class="container">
-
-    <div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
-   <div th:case="true">
-        <div th:switch="${favoritas.contains(pelicula)}">
-       <div th:case="false">
-           <form th:action="@{/pelicula/favorita/{idP} (idP = ${pelicula.id})}" method="post">
-               <button type="submit" class="btn btn-outline-danger">Agregar a favoritas</button>
-           </form>
-       </div>
-       <div th:case="true">
-           <form th:action="@{/pelicula/favorita/{idP}/eliminar (idP = ${pelicula.id})}" method="post">
-               <button type="submit" class="btn btn-outline-danger">Quitar de favoritas</button>
-           </form>
-       </div>
-   </div>
-    <div th:switch="${porVer.contains(pelicula)}">
-        <div th:case="false">
-            <form th:action="@{/pelicula/por_ver/{idP} (idP = ${pelicula.id})}" method="post">
-                <button type="submit" class="btn btn-outline-danger">Agregar a películas por ver</button>
-            </form>
-        </div>
-        <div th:case="true">
-            <form th:action="@{/pelicula/por_ver/{idP}/eliminar (idP = ${pelicula.id})}" method="post">
-                <button type="submit" class="btn btn-outline-danger">Quitar de películas por ver</button>
-            </form>
-        </div>
-    </div>
-   </div>
-    </div>
-
-</div>
-    <br>
-    <div class="container">
-<h3>Reseñas</h3>
-<div th:each="comentario : ${comentarios}">
-    <div>
-        <a th:href="@{/usuario/{username} (username = ${comentario.usuario.username})}" th:text="${comentario.usuario.username}"></a>
-        <p th:text="${comentario.valoracion.promedio}"></p>
-        <p th:text="${comentario.texto}"></p>
-        <form th:action="@{/pelicula/detalles/{idP}/valorar/{idC} (idP=${pelicula.id}, idC=${comentario.id})}" th:object="${valoracionC}" method="post">
-            <select th:field="*{ultima}">
-                <option th:value="1" th:text="1"></option>
-                <option th:value="2" th:text="2"></option>
-                <option th:value="3" th:text="3"></option>
-                <option th:value="4" th:text="4"></option>
-                <option th:value="5" th:text="5"></option>
-            </select>
-            <button type="submit" class="btn btn-danger">Calificar reseña</button>
+    <div class="card border border-danger">
+            <div th:object="${pelicula}" class="cosas-usuarios">
+                <img class="img-fluid objeto" th:src="${'/foto/peliculas/' +pelicula.id}" width="300">
+                <div class="objeto">
+                <h2 th:text="*{titulo}"></h2>
+                <p th:text="*{director}"></p>
+                <span>Reparto: <p th:text="*{actores}"></p></span>
+                <p th:text="*{sinopsis}"></p>
+                    <span>Puntaje: <p th:text="${valoracion.promedio}"></p></span>
+                    <form th:action="@{/pelicula/detalles/{idP}/valorar (idP=${pelicula.id})}" th:object="${valoracion}"
+                          method="post">
+                        <select th:field="*{ultima}">
+                            <option th:value="1" th:text="1"></option>
+                            <option th:value="2" th:text="2"></option>
+                            <option th:value="3" th:text="3"></option>
+                            <option th:value="4" th:text="4"></option>
+                            <option th:value="5" th:text="5"></option>
+                        </select>
+                        <button type="submit" class="btn btn-danger">Calificar película</button>
+                    </form>
+                    <br>
+                    <div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+                        <div th:case="true" class="cosas-usuarios">
+                            <div th:switch="${favoritas.contains(pelicula)}">
+                                <div th:case="false">
+                                    <form th:action="@{/pelicula/favorita/{idP} (idP = ${pelicula.id})}" method="post">
+                                        <button type="submit" class="btn btn-outline-danger">Agregar a favoritas</button>
+                                    </form>
+                                </div>
+                                <div th:case="true">
+                                    <form th:action="@{/pelicula/favorita/{idP}/eliminar (idP = ${pelicula.id})}" method="post">
+                                        <button type="submit" class="btn btn-danger">Quitar de favoritas</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div th:switch="${porVer.contains(pelicula)}">
+                                <div th:case="false">
+                                    <form th:action="@{/pelicula/por_ver/{idP} (idP = ${pelicula.id})}" method="post">
+                                        <button type="submit" class="btn btn-outline-danger">Agregar a películas por ver</button>
+                                    </form>
+                                </div>
+                                <div th:case="true">
+                                    <form th:action="@{/pelicula/por_ver/{idP}/eliminar (idP = ${pelicula.id})}" method="post">
+                                        <button type="submit" class="btn btn-danger">Quitar de películas por ver</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div></div>
+                </div>
+            </div>
+<br>
+    <div class="form-group text-center">
+        <form th:action="@{/pelicula/detalles/{idP}/nuevo (idP = ${pelicula.id})}" th:object="${comentario}"
+              method="post">
+            <input hidden th:field="*{id}">
+            <div class="user-box">
+                <textarea class="w-50" rows="8" type="text" name="texto" th:field="*{texto}"></textarea>
+            </div>
+            <button type="submit" class="btn btn-danger float-right">Publicar reseña</button>
         </form>
-        <a class="btn btn-danger" th:href="@{/pelicula/detalles/{idP}/comentario/{idC} (idP=${pelicula.id}, idC=${comentario.id})}">Comentar</a>
     </div>
+    <img src="/separador-medio.png" alt="" width="100%">
+            <h3 class="text-center mb-4 pb-2">Reseñas</h3>
+            <div th:each="comentario : ${comentarios}">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-12 col-lg-10 col-xl-8">
+                        <div class="card border border-danger">
+                            <div class="card-body p-4">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="d-flex flex-start">
+                                            <div th:switch="${comentario.usuario.foto.mime == 'application/octet-stream'}">
+                                                <img th:case="true"
+                                                     th:src="${'https://avatars.dicebear.com/api/bottts/' + comentario.usuario.username + '.svg'}"
+                                                     class="rounded-circle shadow-1-strong me-3"
+                                                     alt="avatar"
+                                                     width="65"
+                                                     height="65">
+                                                <img th:case="false"
+                                                     th:src="${'/foto/usuario/' + comentario.usuario.username}"
+                                                     class="rounded-circle shadow-1-strong me-3"
+                                                     alt="avatar"
+                                                     width="65"
+                                                     height="65">
+                                                <img th:case="*"
+                                                     th:src="${'https://avatars.dicebear.com/api/bottts/' + comentario.usuario.username + '.svg'}"
+                                                     class="rounded-circle shadow-1-strong me-3"
+                                                     alt="avatar"
+                                                     width="65"
+                                                     height="65">
+                                            </div>
+                                            <div class="flex-grow-1 flex-shrink-1">
+                                                <div>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <a th:href="@{/usuario/{username} (username = ${comentario.usuario.username})}"
+                                                           class="mb-1 text-decoration-none link-danger"><p class="mb-1"
+                                                                                                            th:text="${comentario.usuario.username}">
+                                                        </p></a>
+                                                        <div>
+                                                            <span class="small">Puntaje: <p
+                                                                    th:text="${comentario.valoracion.promedio}"></p></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="small mb-0" th:text="${comentario.texto}">
+                                                    </p>
+                                                    <br>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <form th:action="@{/pelicula/detalles/{idP}/valorar/{idC} (idP=${pelicula.id}, idC=${comentario.id})}"
+                                                              th:object="${valoracionC}" method="post">
+                                                            <select th:field="*{ultima}">
+                                                                <option th:value="1" th:text="1"></option>
+                                                                <option th:value="2" th:text="2"></option>
+                                                                <option th:value="3" th:text="3"></option>
+                                                                <option th:value="4" th:text="4"></option>
+                                                                <option th:value="5" th:text="5"></option>
+                                                            </select>
+                                                            <button type="submit" class="btn btn-outline-danger">
+                                                                Calificar reseña
+                                                            </button>
+                                                        </form>
+                                                        <a class="btn btn-outline-danger"
+                                                           th:href="@{/pelicula/detalles/{idP}/comentario/{idC} (idP=${pelicula.id}, idC=${comentario.id})}">Comentar</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
 </div>
-    </div>
-<div class="container">
-<h3>Nueva reseña</h3>
-<form th:action="@{/pelicula/detalles/{idP}/nuevo (idP = ${pelicula.id})}" th:object="${comentario}" method="post">
-        <input hidden th:field="*{id}">
-    <div class="user-box">
-        <textarea class="form-control w-50" rows="5" type="text" name="texto" th:field = "*{texto}"></textarea>
-    </div>
-    <br>
-    <button type="submit" class="btn btn-danger">Publicar</button>
-</div>
-</form>
-</div>
-<!-- Footer -->
-<footer class="page-footer font-small color-dark pt-4">
 
-    <!-- Footer Elements -->
-    <div class="container">
+    <!-- Footer -->
+    <footer class="page-footer font-small color-dark pt-4" width="100%">
 
-        <!-- Call to action -->
-        <ul class="list-unstyled list-inline text-center py-2">
-            <li class="list-inline-item">
-                <h5 class="mb-1 text-secondary">Forma parte de la comunidad: </h5>
-            </li>
-            <li class="list-inline-item">
-                <button class="btn btn-outline-danger"> <a class="text-decoration-none text-danger" th:href="@{/registrar}">Registrarse!</a></button>
-            </li>
-        </ul>
-        <!-- Call to action -->
+        <!-- Footer Elements -->
+        <div class="container">
 
-    </div>
-    <!-- Footer Elements -->
+            <!-- Call to action -->
+            <ul class="list-unstyled list-inline text-center py-2">
+                <li class="list-inline-item">
+                    <h5 class="mb-1 text-secondary">Forma parte de la comunidad: </h5>
+                </li>
+                <li class="list-inline-item">
+                    <button class="btn btn-outline-danger"><a class="text-decoration-none text-danger"
+                                                              th:href="@{/registrar}">Registrarse!</a></button>
+                </li>
+            </ul>
+            <!-- Call to action -->
 
-    <!-- Copyright -->
-    <div class="footer-copyright text-center py-3 text-secondary">© Hecho por:
-        <a href="https://github.com/juliascode96/red-social-cine" class="text-decoration-none link-secondary">equipo1@EggCoop</a>
-    </div>
-    <!-- Copyright -->
+        </div>
+        <!-- Footer Elements -->
 
-</footer>
-<!-- Footer -->
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3 text-secondary">© Hecho por:
+            <a href="https://github.com/juliascode96/red-social-cine" class="text-decoration-none link-secondary">equipo1@EggCoop</a>
+        </div>
+        <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
 </body>
 </html>
