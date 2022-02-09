@@ -74,11 +74,60 @@
     </nav>
 </header>
 <body>
-<div th:each="comentario : ${seguidos}">
-   <a th:text="${comentario.usuario.username}" th:href="@{/usuario/{username} (username = ${comentario.usuario.username})}"></a>
-    <a th:text="${comentario.pelicula.titulo}" th:href="@{/pelicula/detalles/{id} (id = ${comentario.pelicula.id})}"></a>
-    <p th:text="${comentario.texto}"></p>
-</div>
+
+<section class="gradient-custom">
+    <div class="container my-5 py-5">
+        <h4 class="text-center mb-4 pb-2">Últimas reseñas</h4>
+        <div th:each="comentario : ${seguidos}">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12 col-lg-10 col-xl-8">
+                <div class="card border border-danger">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col">
+                                <div class="d-flex flex-start">
+
+                                    <div th:switch="${comentario.usuario.foto.mime == 'application/octet-stream'}">
+                                        <img th:case="true" th:src="${'https://avatars.dicebear.com/api/bottts/' + comentario.usuario.username + '.svg'}" class="rounded-circle shadow-1-strong me-3"
+                                             alt="avatar"
+                                             width="65"
+                                             height="65">
+                                        <img th:case="false" th:src="${'/foto/usuario/' + comentario.usuario.username}" class="rounded-circle shadow-1-strong me-3"
+                                             alt="avatar"
+                                             width="65"
+                                             height="65">
+                                        <img th:case="*" th:src="${'https://avatars.dicebear.com/api/bottts/' + comentario.usuario.username + '.svg'}" class="rounded-circle shadow-1-strong me-3"
+                                             alt="avatar"
+                                             width="65"
+                                             height="65">
+                                    </div>
+                                    <div class="flex-grow-1 flex-shrink-1">
+                                        <div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <p class="mb-1" th:text="${comentario.usuario.username}">
+                                                    <span class="small" th:text="${comentario.valoracion.promedio}"></span>
+                                                </p>
+                                                <a th:href="@{/pelicula/detalles/{idP}/comentario/{idC} (idP=${comentario.pelicula.id}, idC=${comentario.id})}"
+                                                class="text-decoration-none link-danger" ><i class="fas fa-reply fa-xs"></i
+                                                ><span class="small">Ver reseña</span></a
+                                                >
+                                            </div>
+                                            <p class="small mb-0" th:text="${comentario.texto}">
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
 <!-- Footer -->
 <footer class="page-footer font-small color-dark pt-4">
 

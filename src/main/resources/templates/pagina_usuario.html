@@ -27,16 +27,23 @@
             </button>
             <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item" th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+                    <li class="nav-item"
+                        th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
                         <a class="nav-link" th:case="${false}" th:href="@{/iniciar}">Iniciar sesión</a>
                     </li>
-                    <li class="nav-item dropdown" th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')}">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" th:text="${#authentication.getName}"></a>
+                    <li class="nav-item dropdown"
+                        th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')}">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           th:text="${#authentication.getName}"></a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item link-danger" th:href="@{/personal}">Mi feed</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/usuario/{username} (username = ${#authentication.getName})}">Mi perfil</a></li>
-                            <li class="nav-item" th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
-                                <a class="dropdown-item link-danger" th:case="${true}" th:href="@{/logout}">Cerrar sesión</a>
+                            <li><a class="dropdown-item link-danger"
+                                   th:href="@{/usuario/{username} (username = ${#authentication.getName})}">Mi
+                                perfil</a></li>
+                            <li class="nav-item"
+                                th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+                                <a class="dropdown-item link-danger" th:case="${true}" th:href="@{/logout}">Cerrar
+                                    sesión</a>
                             </li>
                         </ul>
                     </li>
@@ -52,21 +59,32 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Géneros</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = acción)}">Acción</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = aventura)}">Aventura</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = cienciaficción)}">Ciencia ficción</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = comedia)}">Comedia</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = documental)}">Documental</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = drama)}">Drama</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = fantasía)}">Fantasía</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = musical)}">Musical</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = suspenso)}">Suspenso</a></li>
-                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = terror)}">Terror</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = acción)}">Acción</a>
+                            </li>
+                            <li><a class="dropdown-item link-danger"
+                                   th:href="@{/pelicula/{genero} (genero = aventura)}">Aventura</a></li>
+                            <li><a class="dropdown-item link-danger"
+                                   th:href="@{/pelicula/{genero} (genero = cienciaficción)}">Ciencia ficción</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = comedia)}">Comedia</a>
+                            </li>
+                            <li><a class="dropdown-item link-danger"
+                                   th:href="@{/pelicula/{genero} (genero = documental)}">Documental</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = drama)}">Drama</a>
+                            </li>
+                            <li><a class="dropdown-item link-danger"
+                                   th:href="@{/pelicula/{genero} (genero = fantasía)}">Fantasía</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = musical)}">Musical</a>
+                            </li>
+                            <li><a class="dropdown-item link-danger"
+                                   th:href="@{/pelicula/{genero} (genero = suspenso)}">Suspenso</a></li>
+                            <li><a class="dropdown-item link-danger" th:href="@{/pelicula/{genero} (genero = terror)}">Terror</a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
                 <form class="d-flex" th:action="@{/pelicula/busqueda}" method="get">
-                    <input class="form-control me-2" type="text" placeholder="Buscar" name="palabra" th:value="${palabra}">
+                    <input class="form-control me-2" type="text" placeholder="Buscar" name="palabra"
+                           th:value="${palabra}">
                     <button class="btn btn-outline-danger" type="submit">Buscar</button>
                 </form>
             </div>
@@ -75,46 +93,121 @@
 </header>
 <body>
 
-<div th:switch="${usuarioAMostrar.foto.mime == 'application/octet-stream'}">
-    <img th:case="true" th:src="${'https://avatars.dicebear.com/api/bottts/' + usuarioAMostrar.username + '.svg'}" alt="" width="150">
-    <img th:case="false" th:src="${'/foto/usuario/' + usuarioAMostrar.username}" alt="" width="150">
-</div>
-<div th:if="${#authentication.getName().equals(usuarioAMostrar.username)==true}">
-    <button><a th:href="@{/usuario/modificar/{username} (username = ${usuarioAMostrar.username})}">Modificar foto</a></button>
-</div>
-
-
-<h2 th:text="${usuarioAMostrar.username}"></h2>
-<p th:text="${usuarioAMostrar.getPuntaje()}"></p>
-
-<div th:if="${#authentication.getName().equals(usuarioAMostrar.username)==false}">
-    <div th:switch="${seguidos.contains(usuarioAMostrar)}">
-        <div th:case="true">
-            <form th:action="@{/usuario/{username}/no_seguir (username = ${usuarioAMostrar.username})}" method="post">
-                <button type="submit" class="boton">Dejar de seguir</button>
-            </form>
+<br>
+<div class="d-flex flex-column align-items-center">
+<div class="card border-danger mb-3" style="max-width: 540px;">
+    <div class="row no-gutters">
+        <div class="col-md-4">
+            <div th:switch="${usuarioAMostrar.foto.mime == 'application/octet-stream'}">
+                <img th:case="true"
+                     th:src="${'https://avatars.dicebear.com/api/bottts/' + usuarioAMostrar.username + '.svg'}" alt=""
+                     width="150" class="rounded-circle" align="center">
+                <img th:case="false" th:src="${'/foto/usuario/' + usuarioAMostrar.username}" alt="" width="150"
+                     class="rounded-circle" align=="center">
+            </div>
         </div>
-        <div th:case="false">
-            <form th:action="@{/usuario/{username}/seguir (username = ${usuarioAMostrar.username})}" method="post">
-                <button type="submit" class="boton">Seguir</button>
-            </form>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${usuarioAMostrar.username}"></h5>
+                <p class="card-text" th:text="${usuarioAMostrar.getPuntaje()}"></p>
+                <div th:switch="${#authentication.getName().equals(usuarioAMostrar.username)}">
+                    <div th:case="false">
+                        <div th:switch="${seguidos.contains(usuarioAMostrar)}">
+                            <div th:case="true">
+                                <form th:action="@{/usuario/{username}/no_seguir (username = ${usuarioAMostrar.username})}"
+                                      method="post">
+                                    <button type="submit" class="btn btn-danger">Dejar de seguir</button>
+                                </form>
+                            </div>
+                            <div th:case="false">
+                                <form th:action="@{/usuario/{username}/seguir (username = ${usuarioAMostrar.username})}"
+                                      method="post">
+                                    <button type="submit" class="btn btn-outline-danger">Seguir</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:case="true">
+                        <form th:action="@{/usuario/modificar/{username} (username = ${usuarioAMostrar.username})}"
+                              method="post">
+                            <button type="submit" class="btn btn-danger">Modificar foto</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<h3>Reseñas</h3>
+<img src="/separador-medio.png" alt="" width="100%">
+
+
+<div class="hola">
+    <table class="table table-hover w-auto objeto">
+        <thead>
+        <tr>
+            <th scope="col">Películas por ver</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="porVer : ${usuarioAMostrar.peliculasPorVer}">
+            <td th:href="@{/pelicula/detalles/{id} (id = ${porVer.id})}" th:text="${porVer.titulo}"></td>
+        </tr>
+        </tbody>
+
+    </table>
+
+    <table class="table table-hover w-auto objeto">
+        <thead>
+        <tr>
+            <th scope="col">Películas favoritas</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="favorita : ${usuarioAMostrar.peliculasFavoritas}">
+            <td th:href="@{/pelicula/detalles/{id} (id = ${favorita.id})}" th:text="${favorita.titulo}"></td>
+        </tbody>
+
+    </table>
+</div>
+
+<img src="/separador-medio.png" alt="" width="100%">
+
+</div>
+
+<button type="button" class="btn btn-danger">Reseñas</button>
+
 <div th:each="comentario : ${comentarios}">
-    <p th:text="${comentario.pelicula.titulo}"></p>
-    <p th:text="${comentario.texto}"></p>
+    <div class="row d-flex justify-content-left">
+        <div class="col-md-12 col-lg-10 col-xl-8">
+            <div class="card border border-danger objeto">
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col">
+                            <div class="flex-grow-1 flex-shrink-1">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-left">
+                                        <p class="mb-1" th:text="${comentario.pelicula.titulo}">
+                                            <span class="small" th:text="${comentario.valoracion.promedio}"></span>
+                                        </p>
+                                    </div>
+                                    <p class="small mb-0" th:text="${comentario.texto}">
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
 </div>
-<h3>Favoritas</h3>
-<div th:each="favorita : ${usuarioAMostrar.peliculasFavoritas}">
-    <a th:href="@{/pelicula/detalles/{id} (id = ${favorita.id})}" th:text="${favorita.titulo}"></a>
 </div>
-<h3>Por ver</h3>
-<div th:each="porVer : ${usuarioAMostrar.peliculasPorVer}">
-    <a th:href="@{/pelicula/detalles/{id} (id = ${porVer.id})}" th:text="${porVer.titulo}"></a>
-</div>
+
+
 <!-- Footer -->
 <footer class="page-footer font-small color-dark pt-4">
 
@@ -127,7 +220,8 @@
                 <h5 class="mb-1 text-secondary">Forma parte de la comunidad: </h5>
             </li>
             <li class="list-inline-item">
-                <button class="btn btn-outline-danger"> <a class="text-decoration-none text-danger" th:href="@{/registrar}">Registrarse!</a></button>
+                <button class="btn btn-outline-danger"><a class="text-decoration-none text-danger"
+                                                          th:href="@{/registrar}">Registrarse!</a></button>
             </li>
         </ul>
         <!-- Call to action -->

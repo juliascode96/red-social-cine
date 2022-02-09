@@ -74,28 +74,31 @@
     </nav>
 </header>
 <body>
-<div>
-    <h2>Registrarse</h2>
+
     <form th:action="@{/registrar/nuevo}" method="post" enctype="multipart/form-data">
-        <div class="user-box">
-            <input type="text" name = "username" th:value = "${username}">
-            <label>Nombre de usuario</label>
-        </div>
-        <div class="user-box">
-            <input type="password" name = "contrasenia" th:value = "${contrasenia}">
-            <label>Contraseña</label>
-        </div>
-        <div class="user-box">
-            <input type="password" name = "contrasenia2" th:value = "${contrasenia2}">
-            <label>Repetir contraseña</label>
-        </div>
-        <div class="user-box">
-            <input type="file" name = "archivo" th:value = "${archivo}">
-            <label>Foto de perfil</label>
-        </div>
-        <button type="submit" class="boton">Submit</button>
-    </form>
-</div>
+  
+        <br>
+    <h3> <strong>Registrarse </strong></h3>
+    <div class="form-group">
+      <label> Nombre de usuario </label>
+      <input type="text" class="form-control" name = "username" th:value = "${username}">
+    </div>
+    <div class="form-group">
+      <label>Contraseña </label>
+      <input type="password" class="form-control" name = "contrasenia" th:value = "${contrasenia}">
+    </div>
+     <div class="form-group">
+      <label>Repetir contraseña </label>
+      <input type="password" class="form-control" name = "contrasenia2" th:value = "${contrasenia2}">
+    </div>
+    <div class="form-group">
+      <label>Foto</label>
+      <input type="file" class="form-control" name = "archivo" th:value = "${archivo}">
+    </div>
+    <br>
+    <button type="submit" class="btn btn-danger">Registrar</button>
+  </form>
+    
 <!-- Footer -->
 <footer class="page-footer font-small color-dark pt-4">
 
