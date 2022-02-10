@@ -73,7 +73,8 @@
         </div>
     </nav>
 </header>
-    <form th:action="@{/registrar/nuevo}" method="post" enctype="multipart/form-data">
+<div class="formulario">
+<form th:action="@{/registrar/nuevo}" method="post" enctype="multipart/form-data">
         <p th:if="${error != null}" th:text="${error}" style="color:red;"></p>
         <br>
     <h3> <strong>Registrarse </strong></h3>
@@ -96,7 +97,7 @@
     <br>
     <button type="submit" class="btn btn-danger">Registrar</button>
   </form>
-    
+</div>
 <!-- Footer -->
 <footer class="page-footer font-small color-dark pt-4">
 
