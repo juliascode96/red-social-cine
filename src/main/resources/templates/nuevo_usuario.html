@@ -73,10 +73,8 @@
         </div>
     </nav>
 </header>
-<body>
-
     <form th:action="@{/registrar/nuevo}" method="post" enctype="multipart/form-data">
-  
+        <p th:if="${error != null}" th:text="${error}" style="color:red;"></p>
         <br>
     <h3> <strong>Registrarse </strong></h3>
     <div class="form-group">

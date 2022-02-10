@@ -73,30 +73,8 @@
     </div>
   </nav>
 </header>
-<p th:text="${exito}"></p>
-    <br>
-    
-    <div>
-        <h3><strong>Iniciar sesion</strong></h3>
-  <form th:action="@{/login}" th:object="${usuario}" method="post">
-    <p th:if="${error != null}" th:text="${error}" style="color:red;"></p>
-    <div class="form-group">
-     <label>Nombre de usuario</label>
-        <input type="text" class="form-control" name = "username" th:field = "*{username}">
-          </div>
-    <div class="form-group">
-          <label>Contraseña</label>
-        <input type="password" class="form-control" name = "contrasenia" th:field = "*{contrasenia}">
-     </div>
-    <br>
-    <button type="submit" class="btn btn-danger">Submit</button>
-  </form>
-  
-  <br>
-  
-  <h3>¿Aún no tienes cuenta? Registrate <a th:href="@{/registrar}">aqui</a></h3>
-</div>
-    
+<h2 class="text-center text-danger">Oops! Algo salió mal</h2>
+<p th:if="${error != null}" th:text="${error}" style="color:red;" class="text-center"></p>
 <!-- Footer -->
 <footer class="page-footer font-small color-dark pt-4">
 

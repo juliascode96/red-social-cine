@@ -74,14 +74,16 @@
     </nav>
 </header>
 <body>
-
+<br>
+<h4><b>Modificar foto de usuario</b></h4>
 <form th:action="@{/usuario/modificarfoto/{username} (username=${usuario.username}) }"  method="post" enctype="multipart/form-data">
-    <div class="user-box">
-        <input type="file" name = "archivo" th:value = "${archivo}">
-        <label>Nueva imagen</label>
-    </div>
+    <div class="form-group">
+        <label><b>Nueva imagen</b></label>
+        <input type="file" class="form-control" name = "archivo" th:value = "${archivo}">
 
-    <button type="submit" class="boton">Submit</button>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-danger">Submit</button>
 </form>
 <!-- Footer -->
 <footer class="page-footer font-small color-dark pt-4">

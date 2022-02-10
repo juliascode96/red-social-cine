@@ -101,12 +101,32 @@
                                         <div class="flex-grow-1 flex-shrink-1">
                                             <div>
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                    <p class="mb-1" th:text="${comentario.usuario.username}">
-                                                        <span class="small" th:text="${comentario.valoracion.promedio}"></span>
-                                                    </p>
+                                                    <a th:href="@{/usuario/{username} (username = ${comentario.usuario.username})}"
+                                                       class="mb-1 text-decoration-none link-danger"><p class="mb-1"
+                                                                                                        th:text="${comentario.usuario.username}">
+                                                    </p></a>
+                                                    <div>
+                                                            <span class="small">Puntaje de la reseña: <p
+                                                                    th:text="${comentario.valoracion.promedio}"></p></span>
+                                                    </div>
                                                 </div>
                                                 <p class="small mb-0" th:text="${comentario.texto}">
                                                 </p>
+                                                <br>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <form th:action="@{/pelicula/detalles/{idP}/valorar/{idC} (idP=${pelicula.id}, idC=${comentario.id})}"
+                                                          th:object="${valoracion}" method="post">
+                                                        <select th:field="*{ultima}">
+                                                            <option th:value="1" th:text="1"></option>
+                                                            <option th:value="2" th:text="2"></option>
+                                                            <option th:value="3" th:text="3"></option>
+                                                            <option th:value="4" th:text="4"></option>
+                                                            <option th:value="5" th:text="5"></option>
+                                                        </select>
+                                                        <button type="submit" class="btn btn-outline-danger">
+                                                            Calificar reseña
+                                                        </button>
+                                                    </form>
                                             </div>
                                             <div class="d-flex flex-start mt-4" th:each="r : ${respuestas}">
                                                 <a class="me-3" href="#">

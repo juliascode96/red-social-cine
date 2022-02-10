@@ -16,7 +16,6 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
 
 @Configuration
@@ -43,8 +42,8 @@ public class WebAutorization extends WebSecurityConfigurerAdapter {
                 .antMatchers( "/pelicula/detalles/**").permitAll()
                 .antMatchers("/pelicula/ver-todas/**").permitAll()
                 .antMatchers( "/pelicula/genero/**").permitAll()
-                .antMatchers("/iniciar").permitAll()
-                .antMatchers("/registrar").permitAll();
+                .antMatchers("/iniciar").anonymous()
+                .antMatchers("/registrar").anonymous();
 
 
                 /*
