@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ValoracionControl {
     @Autowired
     ValoracionServicio valoracionServicio;
+   // @Autowired
+   // RepUsuario repUsuario;
+   // @Autowired
+   // RepoPelicula repopeli;
 
     @PostMapping("/pelicula/detalles/{idP}/valorar")
     public String valorarPelicula(@PathVariable Long idP, Valoracion valoracion) {
@@ -22,4 +26,17 @@ public class ValoracionControl {
             return "redirect:/error";
         }
     }
+    
+   /* @PostMapping("/pelicula/detalles/{idP}/valorar")
+    public String valorarPelicula(@PathVariable Long idP, Valoracion valoracion, Authentication auth) {
+        Usuario usuario = repUsuario.findByUsername(auth.getName()).get();
+        
+        if  (respuesta.get
+        try {
+            valoracionServicio.valorar(valoracion, idP,usuario);
+            return "redirect:/pelicula/detalles/{idP}";
+        } catch (ErrorServicio e) {
+            return "redirect:/error";
+        }
+    }*/
 }
