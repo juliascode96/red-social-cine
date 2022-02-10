@@ -76,10 +76,10 @@
 <p th:text="${exito}"></p>
     <br>
     
-    <div>
-        <h3><strong>Iniciar sesion</strong></h3>
+    <div class="formulario">
   <form th:action="@{/login}" th:object="${usuario}" method="post">
     <p th:if="${error != null}" th:text="${error}" style="color:red;"></p>
+    <h3><strong>Iniciar sesion</strong></h3>
     <div class="form-group">
      <label>Nombre de usuario</label>
         <input type="text" class="form-control" name = "username" th:field = "*{username}">
@@ -93,9 +93,8 @@
   </form>
   
   <br>
-  
-  <h3>¿Aún no tienes cuenta? Registrate <a th:href="@{/registrar}">aqui</a></h3>
 </div>
+<p class="text-center">¿Aún no tienes cuenta? Registrate <a th:href="@{/registrar}" class="text-decoration-none link-danger">aqui</a></p>
     
 <!-- Footer -->
 <footer class="page-footer font-small color-dark pt-4">
