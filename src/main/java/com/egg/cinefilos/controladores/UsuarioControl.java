@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,32 +43,16 @@ public class UsuarioControl {
     }
 
 
-    /*
-    @PostMapping("/creada")
-    public String crearPelicula(@ModelAttribute("pelicula") @RequestParam String titulo, @RequestParam String director,
-                                @RequestParam Integer duracion, @RequestParam String sinopsis, @RequestParam String genero, @RequestParam Integer anio, @RequestParam MultipartFile archivo) {
-        Pelicula pelicula = new Pelicula();
-        try {
-            Foto foto = fotosv.guardar(archivo);
-            pelicula.setFoto(foto);
-            peliculaServicio.CreacionPelicula(titulo, director, sinopsis, duracion, genero, anio, archivo);
-            return "redirect:/pelicula/todas";
-        }catch (ErrorServicio e) {
-            return "redirect:/error";
-        }
-    }
-     */
-
-
     @PostMapping("/registrar/nuevo")
-    public String registroDeUsuario(@ModelAttribute("usuario") @RequestParam String username, @RequestParam String contrasenia, @RequestParam String contrasenia2, @RequestParam MultipartFile archivo) {
+    public String registroDeUsuario(@ModelAttribute("usuario") @RequestParam String username, @RequestParam String contrasenia, @RequestParam String contrasenia2, @RequestParam MultipartFile archivo, ModelMap model) throws ErrorServicio{
         try {
             usuarioServicio.guardarUsuario(username, contrasenia, contrasenia2, archivo);
-            return "redirect:/";
+            return "redirect:/iniciar";
         } catch (ErrorServicio e) {
-            System.out.println(e);
-            return "redirect:/error";
+            model.put("error", e.getMessage());
+            return "nuevo_usuario";
         }
+
     }
 
     @GetMapping("/iniciar")

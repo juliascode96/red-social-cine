@@ -101,8 +101,8 @@
             <div th:switch="${usuarioAMostrar.foto.mime == 'application/octet-stream'}">
                 <img th:case="true"
                      th:src="${'https://avatars.dicebear.com/api/bottts/' + usuarioAMostrar.username + '.svg'}" alt=""
-                     width="150" class="rounded-circle" align="center">
-                <img th:case="false" th:src="${'/foto/usuario/' + usuarioAMostrar.username}" alt="" width="150"
+                     width="100" class="rounded-circle" align="center">
+                <img th:case="false" th:src="${'/foto/usuario/' + usuarioAMostrar.username}" alt="" width="100"
                      class="rounded-circle" align=="center">
             </div>
         </div>
@@ -129,7 +129,7 @@
                     </div>
                     <div th:case="true">
                         <form th:action="@{/usuario/modificar/{username} (username = ${usuarioAMostrar.username})}"
-                              method="post">
+                              method="get">
                             <button type="submit" class="btn btn-danger">Modificar foto</button>
                         </form>
                     </div>
@@ -139,7 +139,7 @@
     </div>
 </div>
 
-<img src="/separador-medio.png" alt="" width="100%">
+<img src="/separador-medio.png" alt="" width="70%">
 
 
 <div class="hola">
@@ -173,23 +173,26 @@
     </table>
 </div>
 
-<img src="/separador-medio.png" alt="" width="100%">
-
+<img src="/separador-medio.png" alt="" width="70%">
 </div>
+
 
 <button type="button" class="btn btn-danger">Reseñas</button>
 
-<div th:each="comentario : ${comentarios}">
+    <div th:each="comentario : ${comentarios}">
     <div class="row d-flex justify-content-left">
         <div class="col-md-12 col-lg-10 col-xl-8">
             <div class="card border border-danger objeto">
                 <div class="card-body p-4">
                     <div class="row">
                         <div class="col">
-                            <div class="flex-grow-1 flex-shrink-1">
+                            <div class="flex-grow-1 flex-shrink-1 cosas-usuarios">
+                                <div class="col-md-4">
+                                    <img th:src="${'/foto/peliculas/' +comentario.pelicula.id}" width="50%">
+                                </div>
                                 <div>
                                     <div class="d-flex justify-content-between align-items-left">
-                                        <p class="mb-1" th:text="${comentario.pelicula.titulo}">
+                                        <a th:href="@{/pelicula/detalles/{id} (id = ${comentario.pelicula.id})}" class="text-decoration-none link-danger"><p class="mb-1 text-center" th:text="${comentario.pelicula.titulo}"></a>
                                             <span class="small" th:text="${comentario.valoracion.promedio}"></span>
                                         </p>
                                     </div>

@@ -107,6 +107,10 @@
                                                 <p class="mb-1" th:text="${comentario.usuario.username}">
                                                     <span class="small" th:text="${comentario.valoracion.promedio}"></span>
                                                 </p>
+                                                <a th:href="@{/pelicula/detalles/{idP} (idP=${comentario.pelicula.id})}"
+                                                   class="text-decoration-none link-danger" ><i class="fas fa-reply fa-xs"></i
+                                                ><p class="small" th:text="${comentario.pelicula.titulo}"></p></a
+                                                >
                                                 <a th:href="@{/pelicula/detalles/{idP}/comentario/{idC} (idP=${comentario.pelicula.id}, idC=${comentario.id})}"
                                                 class="text-decoration-none link-danger" ><i class="fas fa-reply fa-xs"></i
                                                 ><span class="small">Ver reseña</span></a

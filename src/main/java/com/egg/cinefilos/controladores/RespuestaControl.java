@@ -9,6 +9,7 @@ import com.egg.cinefilos.servicios.RespuestaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,7 @@ public class RespuestaControl {
 
 
     @PostMapping("/pelicula/detalles/{idP}/comentario/{idC}/nueva_respuesta")
-    public String nuevaRespuesta(@PathVariable Long idP, @PathVariable Long idC, @ModelAttribute("respuesta")Respuesta respuesta, Authentication auth) {
+    public String nuevaRespuesta(@PathVariable Long idP, @PathVariable Long idC, @ModelAttribute("respuesta")Respuesta respuesta, Authentication auth, ModelMap model) {
         Usuario usuario = repUsuario.findByUsername(auth.getName()).orElse(null);
         respuesta.setComentario(comentarioServicio.buscarPorId(idC).get());
         respuesta.setUsuario(usuario);
@@ -34,7 +35,8 @@ public class RespuestaControl {
             respuestaServicio.publicarRespuesta(respuesta);
             return "redirect:/pelicula/detalles/{idP}/comentario/{idC}";
         } catch (ErrorServicio e) {
-            return "redirect:/error";
+            model.put("error", e.getMessage());
+            return "error";
         }
     }
 }

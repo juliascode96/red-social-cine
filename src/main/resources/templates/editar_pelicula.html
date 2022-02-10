@@ -73,11 +73,11 @@
                 </div>
             </nav>
         </header>
-    <body>
               <br>
         <div>
             <h3><strong> Editar pelicula</strong></h3>
             <form th:action="@{/pelicula/{id} (id = ${pelicula.id})}" th:object="${pelicula}" method="post" enctype="multipart/form-data">
+                <p th:if="${error != null}" th:text="${error}" style="color:red;"></p>
                            <br>
                 <div class="form-group">
                     <label><b>Titulo</b></label>
