@@ -20,6 +20,7 @@ public class Valoracion {
     private Double total;
     private Double promedio;
     private Double ultima;
+    //private HashSet<Long> chequeoUsuarios;
 
     @OneToOne
     private Pelicula pelicula;
